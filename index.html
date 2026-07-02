@@ -538,45 +538,63 @@
             justify-content: center;
             border: none;
             outline: none;
-        }
-
-        /* Monedas Plateadas (10c, 20c, 50c, S/.1) */
-        .coin-silver {
-            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 45%, #cbd5e1 70%, #64748b 100%);
-            box-shadow:
-                0 4px 0 #334155,
+        }        /* Monedas peruanas reales */
+        .coin-10c {
+            background: url('images/coin_10c.png') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #b58c30;
+            box-shadow: 
+                0 4px 0 #805c1a,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0, 0, 0, 0.2),
-                inset 0 2px 4px rgba(255, 255, 255, 0.8);
-            color: #1e293b;
+                inset 0 -2px 3px rgba(0,0,0,0.25);
+            color: transparent !important;
+            text-shadow: none !important;
+        }
+        .coin-20c {
+            background: url('images/coin_20c.png') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #b58c30;
+            box-shadow: 
+                0 4px 0 #805c1a,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0,0,0,0.25);
+            color: transparent !important;
+            text-shadow: none !important;
+        }
+        .coin-50c {
+            background: url('images/coin_50c.png') no-repeat center center;
+            background-size: cover;
             border: 2px solid #94a3b8;
+            box-shadow: 
+                0 4px 0 #475569,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0,0,0,0.2);
+            color: transparent !important;
+            text-shadow: none !important;
         }
-
-        .coin-silver::before {
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            border-radius: 50%;
-            border: 1.5px dashed rgba(100, 116, 139, 0.4);
+        .coin-1s {
+            background: url('images/coin_1s.png') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #94a3b8;
+            box-shadow: 
+                0 4px 0 #475569,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0,0,0,0.2);
+            color: transparent !important;
+            text-shadow: none !important;
         }
-
-        /* Monedas Bimetálicas (S/.2, S/.5) */
-        .coin-bimetallic {
+        .coin-2s {
             background: radial-gradient(circle at 50% 50%, #facc15 0%, #eab308 40%, #e2e8f0 43%, #cbd5e1 75%, #64748b 100%);
+            border: 2px solid #94a3b8;
             box-shadow:
                 0 4px 0 #334155,
                 0 6px 12px rgba(0, 0, 0, 0.5),
                 inset 0 -2px 3px rgba(0, 0, 0, 0.25),
                 inset 0 2px 4px rgba(255, 255, 255, 0.8);
             color: #0f172a;
-            border: 2px solid #94a3b8;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         }
-
-        .coin-bimetallic::before {
+        .coin-2s::before {
             content: '';
             position: absolute;
             top: 4px;
@@ -586,37 +604,37 @@
             border-radius: 50%;
             border: 1.5px dashed rgba(234, 179, 8, 0.45);
         }
-
+        .coin-5s {
+            background: url('images/coin_5s.png') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #64748b;
+            box-shadow: 
+                0 4px 0 #334155,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0,0,0,0.25);
+            color: transparent !important;
+            text-shadow: none !important;
+        }
+ 
         .btn-coin:hover:not(:disabled) {
             transform: translateY(-4px) scale(1.06) rotate(6deg);
             box-shadow:
-                0 8px 0 #334155,
-                0 10px 16px rgba(0, 240, 255, 0.35),
-                inset 0 -2px 3px rgba(0, 0, 0, 0.2),
-                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+                0 8px 0 rgba(0, 0, 0, 0.3),
+                0 10px 16px rgba(0, 240, 255, 0.35);
         }
-
+ 
         .btn-coin:active:not(:disabled) {
             transform: translateY(4px) scale(0.96);
             box-shadow:
-                0 0px 0 #334155,
-                0 2px 4px rgba(0, 0, 0, 0.4),
-                inset 0 2px 4px rgba(0, 0, 0, 0.3);
+                0 0px 0 rgba(0,0,0,0.3),
+                0 2px 4px rgba(0, 0, 0, 0.4);
         }
-
+ 
         .btn-coin:disabled {
-            background: radial-gradient(circle at 35% 35%, #475569, #334155 50%, #1e293b 100%) !important;
-            border-color: #334155 !important;
-            color: #1e293b !important;
-            box-shadow: 0 2px 0 #0f172a, 0 3px 5px rgba(0, 0, 0, 0.4) !important;
+            filter: grayscale(1) brightness(0.4) contrast(1.1);
             cursor: not-allowed;
-            opacity: 0.35;
-            transform: none !important;
-            text-shadow: none !important;
-        }
-
-        .btn-coin:disabled::before {
-            border-color: rgba(30, 41, 59, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            opacity: 0.7;
         }
 
         /* Ranura de monedas */
@@ -1379,12 +1397,12 @@
                         <div class="coin-panel">
                             <div class="coin-panel-label">Insertar Monedas (S/.)</div>
                             <div class="coin-grid">
-                                <button class="btn-coin coin-silver" onclick="insertCoin(0.10)" disabled>10¢</button>
-                                <button class="btn-coin coin-silver" onclick="insertCoin(0.20)" disabled>20¢</button>
-                                <button class="btn-coin coin-silver" onclick="insertCoin(0.50)" disabled>50¢</button>
-                                <button class="btn-coin coin-silver" onclick="insertCoin(1.00)" disabled>S/. 1</button>
-                                <button class="btn-coin coin-bimetallic" onclick="insertCoin(2.00)" disabled>S/. 2</button>
-                                <button class="btn-coin coin-bimetallic" onclick="insertCoin(5.00)" disabled>S/. 5</button>
+                                <button class="btn-coin coin-10c" onclick="insertCoin(0.10)" disabled>10¢</button>
+                                <button class="btn-coin coin-20c" onclick="insertCoin(0.20)" disabled>20¢</button>
+                                <button class="btn-coin coin-50c" onclick="insertCoin(0.50)" disabled>50¢</button>
+                                <button class="btn-coin coin-1s" onclick="insertCoin(1.00)" disabled>S/. 1</button>
+                                <button class="btn-coin coin-2s" onclick="insertCoin(2.00)" disabled>S/. 2</button>
+                                <button class="btn-coin coin-5s" onclick="insertCoin(5.00)" disabled>S/. 5</button>
                             </div>
                             <div class="coin-slot">
                                 <span class="slot-label">Monedas →</span>
@@ -1745,12 +1763,27 @@
             }
         }
 
-        function cancelTransaction() {
+        function cancelTransaction(silent = false) {
             if (isDelivering) return;
 
             if (amountDeposited > 0) {
                 playSound('cancel');
-                alert(`Transacción cancelada. Devolviendo S/. ${amountDeposited.toFixed(2)} en monedas.`);
+                
+                if (!silent) {
+                    document.getElementById('screen-status').innerText = "TRANSACCIÓN CANCELADA";
+                    document.getElementById('screen-detail').innerHTML = `<div class="detail-line" style="color: var(--cyber-magenta); font-size:1.15em; font-weight:bold; text-shadow:0 0 10px rgba(255,0,127,0.5);">DEVOLVIENDO: S/. ${amountDeposited.toFixed(2)}</div>`;
+                    document.getElementById('screen-progress-bar').style.width = '0%';
+                    
+                    document.querySelectorAll('.btn-coin').forEach(btn => btn.disabled = true);
+                    document.getElementById('btn-cancel-trans').disabled = true;
+                    
+                    isDelivering = true;
+                    setTimeout(() => {
+                        isDelivering = false;
+                        resetMachine();
+                    }, 2500);
+                    return;
+                }
             }
             resetMachine();
         }
@@ -2486,7 +2519,12 @@
         function openPriceConfigModal() {
             // Cancel transaction if any in progress
             if (amountDeposited > 0) {
-                cancelTransaction();
+                cancelTransaction(true);
+            }
+
+            const errorDiv = document.getElementById('modal-error-message');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
             }
 
             const container = document.getElementById('price-inputs-container');
@@ -2534,9 +2572,13 @@
                 }
             });
 
+            const errorDiv = document.getElementById('modal-error-message');
             if (errors.length > 0) {
-                alert("Errores de validación:\n" + errors.join("\n"));
+                errorDiv.innerHTML = "<strong>Errores de validación:</strong><br>" + errors.join("<br>");
+                errorDiv.style.display = 'block';
                 return;
+            } else {
+                errorDiv.style.display = 'none';
             }
 
             // Save prices
@@ -2552,8 +2594,8 @@
 
             // Refresh FSM diagram of the currently selected product if any
             if (productSelected) {
-                // Cancel active transaction to prevent state mismatches
-                cancelTransaction();
+                // Cancel active transaction silently to prevent state mismatches
+                cancelTransaction(true);
                 selectProduct(productSelected, productPrices[productSelected]);
             }
         }
@@ -2602,6 +2644,7 @@
                 <div class="price-inputs-grid" id="price-inputs-container">
                     <!-- Generado dinámicamente -->
                 </div>
+                <div id="modal-error-message" style="color: #ff007f; font-family: 'Orbitron', sans-serif; font-size: 0.8em; margin-top: 10px; padding: 8px; border: 1px solid rgba(255, 0, 127, 0.3); background: rgba(255, 0, 127, 0.05); border-radius: 6px; display: none; line-height: 1.4;"></div>
             </div>
             <div class="price-modal-footer">
                 <button class="modal-save-btn" onclick="saveNewPrices()">Guardar Cambios</button>
