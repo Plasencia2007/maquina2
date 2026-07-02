@@ -809,7 +809,7 @@
         .diagram-panel {
             flex: 1;
             min-width: 450px;
-            max-width: 700px;
+            max-width: 950px;
             background: linear-gradient(135deg, rgba(16, 20, 28, 0.92) 0%, rgba(8, 12, 18, 0.95) 100%);
             border-radius: 20px;
             border: 2px solid rgba(0, 240, 255, 0.25);
@@ -1134,7 +1134,7 @@
         }
 
         #network-container {
-            height: 480px;
+            height: 750px;
             border: 2px solid rgba(0, 240, 255, 0.25);
             border-radius: 12px;
             background: rgba(5, 8, 12, 0.95);
@@ -1180,7 +1180,7 @@
 
         /* Estilos Tabla de Transición */
         .table-responsive {
-            max-height: 480px;
+            max-height: 750px;
             overflow-y: auto;
             border-radius: 12px;
             border: 2px solid rgba(0, 240, 255, 0.2);
@@ -1539,6 +1539,183 @@
                 margin: 14px;
             }
         }
+        /* Estilos para el MEF Principal Global */
+        .mef-grid-flow {
+            display: grid;
+            grid-template-columns: 120px 80px 120px 80px 120px;
+            grid-template-rows: auto auto auto;
+            gap: 10px 15px;
+            align-items: center;
+            justify-content: center;
+            margin: 25px auto;
+            max-width: 680px;
+        }
+
+        .mef-state-node-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mef-state-node {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #06090f;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .mef-state-node.orange {
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+        .mef-state-node.blue {
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+        .mef-state-node.teal {
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+        .mef-state-node.green {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .mef-state-node.active {
+            border-color: #00ff66 !important;
+            color: #ffffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 102, 0.4),
+                inset 0 0 12px rgba(0, 255, 102, 0.2);
+            transform: scale(1.08);
+        }
+
+        .mef-state-node.active .node-id {
+            color: #00ff66;
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.6);
+        }
+
+        .mef-state-node .node-id {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.05em;
+            color: var(--cyber-blue);
+            margin-bottom: 2px;
+        }
+
+        .mef-state-node .node-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.66em;
+            line-height: 1.2;
+            color: #94a3b8;
+        }
+
+        .mef-state-node.active .node-desc {
+            color: #e2e8f0;
+        }
+
+        /* Flechas horizontales normales (de izquierda a derecha) */
+        .mef-arrow-h {
+            height: 2px;
+            background: rgba(0, 240, 255, 0.3);
+            position: relative;
+            width: 100%;
+        }
+
+        .mef-arrow-h::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 8px solid rgba(0, 240, 255, 0.6);
+        }
+
+        .mef-arrow-h::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.52em;
+            color: #64748b;
+            font-family: 'Orbitron', sans-serif;
+            white-space: nowrap;
+        }
+
+        /* Flechas horizontales invertidas (de derecha a izquierda) */
+        .mef-arrow-h-rev {
+            height: 2px;
+            background: rgba(34, 197, 94, 0.3);
+            position: relative;
+            width: 100%;
+        }
+
+        .mef-arrow-h-rev::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 8px solid rgba(34, 197, 94, 0.6);
+        }
+
+        .mef-arrow-h-rev::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.52em;
+            color: #64748b;
+            font-family: 'Orbitron', sans-serif;
+            white-space: nowrap;
+        }
+
+        /* Flechas verticales de bajada */
+        .mef-arrow-v {
+            width: 2px;
+            height: 40px;
+            background: rgba(251, 191, 36, 0.3);
+            position: relative;
+            margin: auto;
+        }
+
+        .mef-arrow-v::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid rgba(251, 191, 36, 0.6);
+        }
+
+        .mef-arrow-v::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 0.52em;
+            color: #64748b;
+            font-family: 'Orbitron', sans-serif;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -1715,6 +1892,7 @@
                     <button class="tab-btn active" onclick="switchTab('graph', this)">⚡ Grafo FSM</button>
                     <button class="tab-btn" onclick="switchTab('table', this)">📊 Tabla de Transición</button>
                     <button class="tab-btn" onclick="switchTab('formal', this)">📝 Def. Formal</button>
+                    <button class="tab-btn" onclick="switchTab('global', this)">🏛️ MEF Global</button>
                 </div>
                 <div id="graph-controls" style="display: flex; gap: 6px;">
                     <button class="graph-btn" onclick="zoomGraph(1.2)" title="Acercar">＋</button>
@@ -1738,6 +1916,9 @@
             </div>
             <div id="tab-formal" class="tab-content" style="display: none;">
                 <div id="formal-container"></div>
+            </div>
+            <div id="tab-global" class="tab-content" style="display: none;">
+                <div id="global-container"></div>
             </div>
         </div>
     </div>
@@ -1930,6 +2111,10 @@
                 document.getElementById('tab-formal').style.display = 'block';
                 document.getElementById('graph-controls').style.display = 'none';
                 document.getElementById('formal-container').innerHTML = generateFormalDefinition();
+            } else if (tabId === 'global') {
+                document.getElementById('tab-global').style.display = 'block';
+                document.getElementById('graph-controls').style.display = 'none';
+                document.getElementById('global-container').innerHTML = generateGlobalMEF();
             }
         }
 
@@ -2028,10 +2213,9 @@
                 // Actualizar colores y aristas del grafo para mostrar recorrido final
                 highlightCurrentState();
 
-                // Reestablecer máquina al estado inicial para la siguiente compra después de 4s
+                // Finalizar animación de entrega en pantalla, el grafo mantendrá el estado hasta retirar el producto
                 setTimeout(() => {
                     document.getElementById('machine-screen').classList.remove('delivering');
-                    resetMachine();
                     isDelivering = false;
                 }, 4500);
                 return;
@@ -2104,17 +2288,11 @@
                 trayProd.classList.remove('delivered-item');
                 playSound('coin'); // sound feedback
 
-                let originalStatus = "SELECCIONE UN PRODUCTO";
-                let originalDetail = "Monto depositado: S/. 0.00";
-
                 document.getElementById('screen-status').innerText = "¡GRACIAS POR SU COMPRA!";
                 document.getElementById('screen-detail').innerText = "Vuelva pronto";
 
                 setTimeout(() => {
-                    if (!productSelected) {
-                        document.getElementById('screen-status').innerText = originalStatus;
-                        document.getElementById('screen-detail').innerText = originalDetail;
-                    }
+                    resetMachine();
                 }, 2000);
             }
         }
@@ -2197,6 +2375,9 @@
             }
             if (document.getElementById('tab-formal').style.display === 'block') {
                 document.getElementById('formal-container').innerHTML = generateFormalDefinition();
+            }
+            if (document.getElementById('tab-global').style.display === 'block') {
+                document.getElementById('global-container').innerHTML = generateGlobalMEF();
             }
 
             // Actualizar la píldora de estado
@@ -2808,13 +2989,20 @@
             statesList.forEach(stateId => {
                 let isCurrent = stateId === currentState;
 
+                let displayName = stateId;
+                if (stateId === "q_0.00") {
+                    displayName = `<span style="color: #00f0ff; margin-right: 4px; font-weight: 900;">→</span>${stateId}`;
+                } else if (stateId === "q_exacto" || stateId === "q_vuelto") {
+                    displayName = `<span style="color: #00ff66; margin-right: 4px; font-size: 1.15em; vertical-align: middle;">⊚</span>${stateId}`;
+                }
+
                 html += `<tr class="${isCurrent ? 'row-active' : ''}">
-                    <td><strong>${stateId}</strong></td>`;
+                    <td><strong>${displayName}</strong></td>`;
 
                 COINS.forEach(coin => {
                     if (stateId === "q_exacto" || stateId === "q_vuelto") {
                         html += `<td>
-                            <span class="next-state">q_0.00</span>
+                            <span class="next-state"><span style="color: #00f0ff; margin-right: 2px; font-weight: 900;">→</span>q_0.00</span>
                             <span class="output-val">Nueva compra</span>
                         </td>`;
                     } else {
@@ -2829,8 +3017,15 @@
                             transitionOutput = "Entregar + Vuelto";
                         }
 
+                        let nextDisplayName = nextStateId;
+                        if (nextStateId === "q_0.00") {
+                            nextDisplayName = `<span style="color: #00f0ff; margin-right: 2px; font-weight: 900;">→</span>${nextStateId}`;
+                        } else if (nextStateId === "q_exacto" || nextStateId === "q_vuelto") {
+                            nextDisplayName = `<span style="color: #00ff66; margin-right: 2px; font-size: 1.1em; vertical-align: middle;">⊚</span>${nextStateId}`;
+                        }
+
                         html += `<td>
-                            <span class="next-state">${nextStateId}</span>
+                            <span class="next-state">${nextDisplayName}</span>
                             <span class="output-val">${transitionOutput}</span>
                         </td>`;
                     }
@@ -2911,6 +3106,103 @@
             </div>
             `;
             return html;
+        }
+
+        function generateGlobalMEF() {
+            let activeState = "qM0";
+            let trayProd = document.getElementById('tray-product');
+            let isTrayOccupied = trayProd && trayProd.style.display === 'block';
+
+            if (currentState === "q_0.00" && !isDelivering && !isTrayOccupied) {
+                activeState = "qM0";
+            } else if (productSelected !== null && amountDeposited > 0 && amountDeposited < priceSelected && !isDelivering) {
+                activeState = "qM1";
+            } else if (amountDeposited >= priceSelected && isDelivering && currentState !== "q_exacto" && currentState !== "q_vuelto") {
+                activeState = "qM2";
+            } else if (isDelivering && (currentState === "q_exacto" || currentState === "q_vuelto")) {
+                activeState = "qM3";
+            } else if (isTrayOccupied && !isDelivering) {
+                activeState = "qM4";
+            } else if (isTrayOccupied && isDelivering) {
+                activeState = "qM4";
+            } else if (productSelected === null && currentState === "q_0.00" && isTrayOccupied) {
+                activeState = "qM5";
+            }
+
+            const screenStatus = document.getElementById('screen-status');
+            if (screenStatus && screenStatus.innerText === "¡GRACIAS POR SU COMPRA!") {
+                activeState = "qM5";
+            }
+
+            const checkActive = (state) => activeState === state ? "active" : "";
+
+            return `
+            <div class="mef-global-container">
+                <div class="mef-global-header">
+                    <h3>MEF 1 Principal: Control Externo de la Máquina</h3>
+                    <div style="font-size: 0.8em; color: #64748b; margin-top: 4px; font-family: 'Orbitron', sans-serif;">
+                        Qm = {qM0, qM1, qM2, qM3, qM4, qM5} | qM1 contiene MEF 2 (Control Dinero) y qM4 contiene MEF 3 (Control Recojo)
+                    </div>
+                </div>
+
+                <div class="mef-grid-flow">
+                    <!-- Fila 1: qM0 -> qM1 -> qM2 -->
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node orange ${checkActive('qM0')}" id="node-qM0">
+                            <span class="node-id">qM0</span>
+                            <span class="node-desc">Esperando dinero</span>
+                        </div>
+                    </div>
+                    <div class="mef-arrow-h blue" data-label="insertar moneda"></div>
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node blue ${checkActive('qM1')}" id="node-qM1">
+                            <span class="node-id">qM1</span>
+                            <span class="node-desc">Control dinero<br>(MEF 2)</span>
+                        </div>
+                    </div>
+                    <div class="mef-arrow-h green" data-label="saldo suficiente"></div>
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node teal ${checkActive('qM2')}" id="node-qM2">
+                            <span class="node-id">qM2</span>
+                            <span class="node-desc">Producto habilitado</span>
+                        </div>
+                    </div>
+
+                    <!-- Fila intermedia de bajada -->
+                    <div></div><div></div><div></div><div></div>
+                    <div class="mef-arrow-v orange" data-label="seleccionar producto"></div>
+
+                    <!-- Fila 2: qM5 <- qM4 <- qM3 -->
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node green ${checkActive('qM5')}" id="node-qM5">
+                            <span class="node-id">qM5</span>
+                            <span class="node-desc">Reinicio máquina</span>
+                        </div>
+                    </div>
+                    <div class="mef-arrow-h-rev green" data-label="volver a qM0"></div>
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node blue ${checkActive('qM4')}" id="node-qM4">
+                            <span class="node-id">qM4</span>
+                            <span class="node-desc">Control recojo<br>(MEF 3)</span>
+                        </div>
+                    </div>
+                    <div class="mef-arrow-h-rev green" data-label="recoger producto"></div>
+                    <div class="mef-state-node-wrapper">
+                        <div class="mef-state-node teal ${checkActive('qM3')}" id="node-qM3">
+                            <span class="node-id">qM3</span>
+                            <span class="node-desc">Entregar y vuelto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mef-global-footer-note" style="margin-top: 20px; font-size: 0.8em; line-height: 1.5; color: #94a3b8; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-left: 3px solid var(--cyber-blue);">
+                    <strong>Análisis del Trabajo:</strong> 
+                    Este diagrama representa la estructura de <strong>Máquinas de Estados Finitos Acopladas (Jerárquicas)</strong> de nuestro trabajo de Matemática Discreta. 
+                    El estado <span style="color:var(--cyber-blue);">qM1</span> delega el control a la <strong>MEF 2</strong> (el autómata de acumulación de saldo que se visualiza en la pestaña principal), y el estado <span style="color:var(--cyber-blue);">qM4</span> delega a la <strong>MEF 3</strong> (que monitorea el sensor de recojo de producto). 
+                    Los estados se iluminan dinámicamente en verde según interactúas con la máquina expendedora en tiempo real.
+                </div>
+            </div>
+            `;
         }
 
         // --- FUNCIONES DE NAVEGACIÓN Y ZOOM DEL GRAFO ---
