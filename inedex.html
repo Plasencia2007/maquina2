@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Máquina de Estados Finitos - Expendedora</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --machine-body: #b0b8c1;
+            --machine-dark: #374151;
+            --machine-darker: #1f2937;
+            --machine-border: #4b5563;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --screen-green: #00ff88;
+            --screen-amber: #ffcc00;
+            --accent-red: #ef4444;
+            --accent-red-dark: #b91c1c;
+            --shelf-color: rgba(0, 255, 136, 0.25);
+            --neon-blue: #00bfff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            color: #f1f5f9;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--screen-green);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        header p {
+            color: #94a3b8;
+            margin-top: 8px;
+            font-size: 0.95em;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           MÁQUINA EXPENDEDORA - CUERPO PRINCIPAL
+           ============================================ */
+        .vending-machine {
+            width: 440px;
+            background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 30%, #6b7280 100%);
+            border-radius: 24px;
+            border: 4px solid #4b5563;
+            box-shadow:
+                0 10px 0 #374151,
+                0 20px 0 #1f2937,
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                inset 0 3px 0 rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 5px;
+        }
+
+        /* Barra superior de la máquina */
+        .machine-header {
+            background: linear-gradient(180deg, var(--accent-red) 0%, var(--accent-red-dark) 100%);
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 4px solid #7f1d1d;
+            position: relative;
+        }
+
+        .machine-header::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .machine-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4em;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 4px;
+        }
+
+        /* VITRINA DE PRODUCTOS */
+        .product-showcase {
+            margin: 14px;
+            background: var(--glass-bg);
+            border-radius: 12px;
+            border: 3px solid #1e293b;
+            padding: 4px 0 0 0;
+            overflow: hidden;
+            box-shadow:
+                inset 0 0 40px rgba(0, 0, 0, 0.8),
+                0 0 15px rgba(0, 255, 136, 0.05);
+            position: relative;
+        }
+
+        /* Reflejo del vidrio */
+        .product-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.08) 0%,
+                    transparent 45%,
+                    transparent 55%,
+                    rgba(255, 255, 255, 0.03) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .shelf {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 14px 8px 4px 8px;
+            border-bottom: 4px solid var(--shelf-color);
+            background: linear-gradient(180deg, transparent 80%, rgba(0, 255, 136, 0.05) 100%);
+            position: relative;
+        }
+
+        .shelf:last-child {
+            border-bottom: none;
+            padding-bottom: 12px;
+        }
+
+        /* Soporte físico del estante */
+        .shelf::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            height: 4px;
+            background: linear-gradient(180deg, #475569, #334155);
+            border-radius: 0 0 2px 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 4px;
+            border-radius: 10px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+            width: 30%;
+            border: 1px solid transparent;
+        }
+
+        .product-item:hover {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: rgba(0, 255, 136, 0.2);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+        }
+
+        .product-item.selected {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: var(--screen-green);
+            box-shadow:
+                0 0 15px rgba(0, 255, 136, 0.25),
+                inset 0 0 8px rgba(0, 255, 136, 0.1);
+        }
+
+        .product-item.selected .product-code {
+            background: var(--screen-green);
+            color: #0f172a;
+            box-shadow: 0 0 8px var(--screen-green);
+        }
+
+        .product-icon {
+            font-size: 2.3em;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+            transition: transform 0.3s;
+        }
+
+        .product-item:hover .product-icon {
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .product-name {
+            font-size: 0.72em;
+            color: #cbd5e1;
+            font-weight: 700;
+            margin-bottom: 2px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .product-price {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.68em;
+            color: var(--screen-green);
+            font-weight: 700;
+            text-shadow: 0 0 4px rgba(0, 255, 136, 0.3);
+        }
+
+        .product-code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.62em;
+            background: #334155;
+            color: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-weight: 900;
+            transition: all 0.25s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* PANEL DE CONTROL */
+        .control-section {
+            margin: 0 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Pantalla LED */
+        .led-screen {
+            background: #090d16;
+            border: 3px solid #334155;
+            border-radius: 12px;
+            padding: 16px 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                inset 0 0 25px rgba(0, 0, 0, 0.95),
+                0 0 10px rgba(0, 255, 136, 0.1);
+        }
+
+        /* Scanlines */
+        .led-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.25) 0px,
+                    rgba(0, 0, 0, 0.25) 1px,
+                    transparent 1px,
+                    transparent 3px);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Flicker */
+        .led-screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 255, 136, 0.02);
+            opacity: 0;
+            z-index: 3;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% {
+                opacity: 0.25;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+
+            100% {
+                opacity: 0.25;
+            }
+        }
+
+        .led-screen .status {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            color: var(--screen-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .led-screen .detail {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72em;
+            color: var(--screen-amber);
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        /* Panel de monedas */
+        .coin-panel {
+            background: linear-gradient(180deg, #475569 0%, #334155 100%);
+            border-radius: 12px;
+            padding: 14px;
+            border: 2px solid #64748b;
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.1),
+                0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .coin-panel-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65em;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 900;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .coin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px 10px;
+            justify-items: center;
+        }
+
+        .btn-coin {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: #1e293b;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72em;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            outline: none;
+        }
+
+        /* Monedas Plateadas (10c, 20c, 50c, S/.1) */
+        .coin-silver {
+            border: 3px solid #94a3b8;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+            box-shadow:
+                0 4px 0 #64748b,
+                0 6px 8px rgba(0, 0, 0, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.6);
+            color: #334155;
+        }
+
+        .coin-silver::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(148, 163, 184, 0.4);
+        }
+
+        /* Monedas Bimetálicas (S/.2, S/.5) - Centro dorado, anillo plateado */
+        .coin-bimetallic {
+            border: 3px solid #94a3b8;
+            background: radial-gradient(circle, #eab308 0%, #eab308 42%, #94a3b8 44%, #cbd5e1 75%, #64748b 100%);
+            box-shadow:
+                0 4px 0 #64748b,
+                0 6px 8px rgba(0, 0, 0, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.6);
+            color: #1e293b;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .coin-bimetallic::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(234, 179, 8, 0.3);
+        }
+
+        .btn-coin:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow:
+                0 7px 0 #475569,
+                0 9px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-coin:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow:
+                0 0px 0 #475569,
+                0 2px 4px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-coin:disabled {
+            background: radial-gradient(circle at 35% 35%, #94a3b8, #64748b 50%, #475569 100%) !important;
+            border-color: #475569 !important;
+            color: #334155 !important;
+            box-shadow: 0 2px 0 #334155, 0 3px 5px rgba(0, 0, 0, 0.3) !important;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transform: none !important;
+        }
+
+        .btn-coin:disabled::before {
+            border-color: rgba(71, 85, 105, 0.3) !important;
+        }
+
+        /* Ranura de monedas */
+        .coin-slot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .slot-hole {
+            width: 44px;
+            height: 6px;
+            background: linear-gradient(180deg, #020617, #1e293b);
+            border-radius: 3px;
+            border: 1.5px solid #475569;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .slot-label {
+            font-size: 0.58em;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Botón cancelar */
+        .btn-cancel {
+            background: linear-gradient(180deg, var(--accent-red), var(--accent-red-dark));
+            color: white;
+            border: 2px solid #7f1d1d;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.68em;
+            font-weight: 900;
+            cursor: pointer;
+            letter-spacing: 1px;
+            box-shadow:
+                0 4px 0 #7f1d1d,
+                0 6px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s;
+        }
+
+        .btn-cancel:hover:not(:disabled) {
+            background: linear-gradient(180deg, #f87171, var(--accent-red));
+            transform: translateY(-1px);
+            box-shadow:
+                0 5px 0 #7f1d1d,
+                0 7px 14px rgba(0, 0, 0, 0.35);
+        }
+
+        .btn-cancel:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #7f1d1d;
+        }
+
+        .btn-cancel:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 0 2px 0 #475569, 0 3px 5px rgba(0, 0, 0, 0.2);
+            background: #4b5563;
+            border-color: #374151;
+        }
+
+        /* Bandeja de entrega */
+        .delivery-tray {
+            margin: 0 14px 16px;
+            height: 48px;
+            background: linear-gradient(180deg, #1e293b, #0f172a);
+            border-radius: 0 0 14px 14px;
+            border: 2px solid #475569;
+            border-top: none;
+            box-shadow:
+                inset 0 8px 16px rgba(0, 0, 0, 0.95),
+                0 2px 4px rgba(0, 0, 0, 0.4);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .delivery-tray::before {
+            content: 'RETIRAR PRODUCTO';
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55em;
+            color: #475569;
+            letter-spacing: 2.5px;
+            pointer-events: none;
+        }
+
+        .tray-flap {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: linear-gradient(90deg, #334155, #64748b, #334155);
+            border-radius: 0 0 3px 3px;
+        }
+
+        /* Patas de la máquina */
+        .machine-feet {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 34px;
+        }
+
+        .foot {
+            width: 44px;
+            height: 10px;
+            background: linear-gradient(180deg, #374151, #111827);
+            border-radius: 0 0 6px 6px;
+        }
+
+        .diagram-panel {
+            flex: 1;
+            min-width: 450px;
+            max-width: 700px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            border-radius: 20px;
+            border: 1px solid rgba(100, 130, 160, 0.3);
+            padding: 24px;
+            box-shadow: 0 10px 45px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: scale(1);
+            transform-origin: right center;
+            display: block;
+        }
+
+        .diagram-panel.collapsed {
+            flex: 0;
+            min-width: 0;
+            max-width: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+            transform: scale(0.9);
+            border: 0 solid transparent;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Botón de alternancia de FSM */
+        .toggle-fsm-btn {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #cbd5e1;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 30px;
+            padding: 10px 24px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            outline: none;
+        }
+
+        .toggle-fsm-btn:hover {
+            color: var(--screen-green);
+            border-color: var(--screen-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .toggle-fsm-btn.active {
+            background: var(--screen-green);
+            color: #020617;
+            border-color: var(--screen-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .toggle-fsm-btn .icon {
+            font-size: 1.1em;
+        }
+
+        /* Botones de Pestañas */
+        .tab-btn {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid rgba(100, 130, 160, 0.15);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.78em;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--screen-green);
+            border-color: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.04);
+        }
+
+        .tab-btn.active {
+            background: var(--screen-green);
+            color: #020617;
+            border-color: var(--screen-green);
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.35);
+        }
+
+        .tab-content {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        #network-container {
+            height: 480px;
+            border: 1px solid rgba(100, 130, 160, 0.2);
+            border-radius: 12px;
+            background: rgba(8, 12, 21, 0.85);
+            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+        }
+
+        .graph-btn {
+            background: #1e293b;
+            color: var(--screen-green);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.8em;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .graph-btn:hover {
+            background: var(--screen-green);
+            color: #020617;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .graph-btn:active {
+            transform: translateY(1px);
+        }
+
+        .diagram-note {
+            font-size: 0.78em;
+            color: #94a3b8;
+            margin-top: 12px;
+            line-height: 1.5;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            border-left: 4px solid var(--screen-green);
+        }
+
+        /* Estilos Tabla de Transición */
+        .table-responsive {
+            max-height: 480px;
+            overflow-y: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(100, 130, 160, 0.2);
+            background: #090d16;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .fsm-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            color: #cbd5e1;
+        }
+
+        .fsm-table th,
+        .fsm-table td {
+            padding: 12px;
+            border: 1px solid rgba(100, 130, 160, 0.1);
+            text-align: center;
+        }
+
+        .fsm-table th {
+            background: #1e293b;
+            color: var(--screen-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 0 rgba(100, 130, 160, 0.2);
+        }
+
+        .fsm-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .fsm-table tr.row-active {
+            background: rgba(0, 255, 136, 0.12) !important;
+            border: 2px solid var(--screen-green);
+        }
+
+        .fsm-table tr.row-active td {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .next-state {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            color: var(--neon-blue);
+            font-size: 0.9em;
+        }
+
+        .output-val {
+            display: block;
+            font-size: 0.76em;
+            color: #ff9f43;
+            margin-top: 3px;
+        }
+
+        /* Animación de entrega */
+        @keyframes deliverProduct {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            40% {
+                transform: translateY(8px);
+                opacity: 1;
+            }
+
+            70% {
+                transform: translateY(-4px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .delivered-item {
+            animation: deliverProduct 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(0, 255, 136, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
+            }
+        }
+
+        .led-screen.delivering {
+            animation: pulseGlow 0.8s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .diagram-panel {
+                min-width: unset;
+                width: 100%;
+                max-width: 440px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Máquina de Estados Finitos (MEF)</h1>
+        <p>Simulador Pedagógico de Expendedora Automática (Modelo de Mealy)</p>
+        <button id="toggle-panel-btn" class="toggle-fsm-btn" onclick="toggleFSMPanel()">
+            <span class="icon">📊</span> Ver Grafo y Análisis FSM
+        </button>
+    </header>
+
+    <div class="main-layout">
+        <!-- MÁQUINA EXPENDEDORA -->
+        <div>
+            <div class="vending-machine">
+                <!-- Barra superior roja con marca -->
+                <div class="machine-header">
+                    <div class="machine-brand">EXPENDEDORA MEF</div>
+                </div>
+
+                <!-- Vitrina con productos en estantes -->
+                <div class="product-showcase">
+                    <!-- Estante A -->
+                    <div class="shelf">
+                        <div class="product-item" id="prod-gaseosa" onclick="selectProduct('Gaseosa', 2.50)">
+                            <div class="product-code">A1</div>
+                            <div class="product-icon">🥤</div>
+                            <div class="product-name">Gaseosa</div>
+                            <div class="product-price">S/. 2.50</div>
+                        </div>
+                        <div class="product-item" id="prod-galletas" onclick="selectProduct('Galletas', 1.20)">
+                            <div class="product-code">A2</div>
+                            <div class="product-icon">🍪</div>
+                            <div class="product-name">Galletas</div>
+                            <div class="product-price">S/. 1.20</div>
+                        </div>
+                        <div class="product-item" id="prod-papas" onclick="selectProduct('Papas', 2.20)">
+                            <div class="product-code">A3</div>
+                            <div class="product-icon">🍟</div>
+                            <div class="product-name">Papas Fritas</div>
+                            <div class="product-price">S/. 2.20</div>
+                        </div>
+                    </div>
+                    <!-- Estante B -->
+                    <div class="shelf">
+                        <div class="product-item" id="prod-chocolate" onclick="selectProduct('Chocolate', 3.50)">
+                            <div class="product-code">B1</div>
+                            <div class="product-icon">🍫</div>
+                            <div class="product-name">Chocolate</div>
+                            <div class="product-price">S/. 3.50</div>
+                        </div>
+                        <div class="product-item" id="prod-agua" onclick="selectProduct('Agua', 1.50)">
+                            <div class="product-code">B2</div>
+                            <div class="product-icon">💧</div>
+                            <div class="product-name">Agua Mineral</div>
+                            <div class="product-price">S/. 1.50</div>
+                        </div>
+                        <div class="product-item" id="prod-jugo" onclick="selectProduct('Jugo', 2.00)">
+                            <div class="product-code">B3</div>
+                            <div class="product-icon">🧃</div>
+                            <div class="product-name">Jugo de Caja</div>
+                            <div class="product-price">S/. 2.00</div>
+                        </div>
+                    </div>
+                    <!-- Estante C -->
+                    <div class="shelf">
+                        <div class="product-item" id="prod-energizante" onclick="selectProduct('Energizante', 4.50)">
+                            <div class="product-code">C1</div>
+                            <div class="product-icon">⚡</div>
+                            <div class="product-name">Energizante</div>
+                            <div class="product-price">S/. 4.50</div>
+                        </div>
+                        <div class="product-item" id="prod-gomitas" onclick="selectProduct('Gomitas', 1.80)">
+                            <div class="product-code">C2</div>
+                            <div class="product-icon">🍬</div>
+                            <div class="product-name">Gomitas</div>
+                            <div class="product-price">S/. 1.80</div>
+                        </div>
+                        <div class="product-item" id="prod-sandwich" onclick="selectProduct('Sándwich', 5.00)">
+                            <div class="product-code">C3</div>
+                            <div class="product-icon">🥪</div>
+                            <div class="product-name">Sándwich</div>
+                            <div class="product-price">S/. 5.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de control -->
+                <div class="control-section">
+                    <!-- Pantalla LED -->
+                    <div class="led-screen" id="machine-screen">
+                        <div class="status" id="screen-status">SELECCIONE UN PRODUCTO</div>
+                        <div class="detail" id="screen-detail">Monto depositado: S/. 0.00</div>
+                    </div>
+
+                    <!-- Panel de monedas -->
+                    <div class="coin-panel">
+                        <div class="coin-panel-label">Insertar Monedas (S/.)</div>
+                        <div class="coin-grid">
+                            <button class="btn-coin coin-silver" onclick="insertCoin(0.10)" disabled>10¢</button>
+                            <button class="btn-coin coin-silver" onclick="insertCoin(0.20)" disabled>20¢</button>
+                            <button class="btn-coin coin-silver" onclick="insertCoin(0.50)" disabled>50¢</button>
+                            <button class="btn-coin coin-silver" onclick="insertCoin(1.00)" disabled>S/. 1</button>
+                            <button class="btn-coin coin-bimetallic" onclick="insertCoin(2.00)" disabled>S/. 2</button>
+                            <button class="btn-coin coin-bimetallic" onclick="insertCoin(5.00)" disabled>S/. 5</button>
+                        </div>
+                        <div class="coin-slot">
+                            <span class="slot-label">Monedas →</span>
+                            <div class="slot-hole"></div>
+                        </div>
+                    </div>
+
+                    <!-- Botón cancelar -->
+                    <button class="btn-cancel" id="btn-cancel-trans" onclick="cancelTransaction()" disabled>✕ CANCELAR /
+                        SOLICITAR VUELTO</button>
+                </div>
+
+                <!-- Bandeja de entrega -->
+                <div class="delivery-tray" onclick="collectProduct()" style="cursor: pointer;"
+                    title="Haga click para retirar el producto">
+                    <div class="tray-flap"></div>
+                    <div id="tray-product"
+                        style="display: none; font-size: 1.8em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));"></div>
+                </div>
+            </div>
+            <!-- Patas -->
+            <div class="machine-feet">
+                <div class="foot"></div>
+                <div class="foot"></div>
+            </div>
+        </div>
+
+        <!-- PANEL DE DIAGRAMA / INFORMACION -->
+        <div class="diagram-panel collapsed" id="fsm-panel">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(0, 255, 136, 0.2); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                <div class="tab-buttons" style="display: flex; gap: 8px;">
+                    <button class="tab-btn active" onclick="switchTab('graph', this)">⚡ Grafo FSM</button>
+                    <button class="tab-btn" onclick="switchTab('table', this)">📊 Tabla de Transición</button>
+                    <button class="tab-btn" onclick="switchTab('formal', this)">📝 Def. Formal</button>
+                </div>
+                <div id="graph-controls" style="display: flex; gap: 6px;">
+                    <button class="graph-btn" onclick="zoomGraph(1.2)" title="Acercar">＋</button>
+                    <button class="graph-btn" onclick="zoomGraph(0.8)" title="Alejar">－</button>
+                    <button class="graph-btn" onclick="resetGraphView()" title="Ajustar y Centrar">🎯 Centrar</button>
+                </div>
+            </div>
+
+            <div id="tab-graph" class="tab-content">
+                <div id="network-container"></div>
+                <div class="diagram-note">
+                    El círculo <strong style="color:#00ff88;">verde brillante</strong> con doble borde representa el
+                    estado actual de la memoria. Las aristas muestran transiciones en formato <strong>Entrada (moneda) /
+                        Salida (entrega y vuelto)</strong>.
+                </div>
+            </div>
+            <div id="tab-table" class="tab-content" style="display: none;">
+                <div id="table-container"></div>
+            </div>
+            <div id="tab-formal" class="tab-content" style="display: none;">
+                <div id="formal-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- AUDIO SYNTHESIZER (Web Audio API) ---
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'coin') {
+                    // Metal ding sound: quick pitch sweep and high frequency
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(987.77, now); // B5
+                    osc.frequency.exponentialRampToValueAtTime(1318.51, now + 0.08); // E6
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'deliver') {
+                    // Fanfare for delivery: rising tones
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.12); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.24); // G5
+                    osc.frequency.setValueAtTime(1046.50, now + 0.36); // C6
+
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.setValueAtTime(0.08, now + 0.36);
+                    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.55);
+                    osc.start(now);
+                    osc.stop(now + 0.55);
+                } else if (type === 'cancel') {
+                    // Error/Cancel tones
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220.00, now); // A3
+                    osc.frequency.setValueAtTime(165.00, now + 0.15);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch (e) {
+                console.warn("Web Audio API no inicializada o bloqueada por navegador:", e);
+            }
+        }
+
+        // --- AUXILIARES FSM ---
+        function getBalanceState(balance, price) {
+            balance = parseFloat(balance.toFixed(2));
+            price = parseFloat(price.toFixed(2));
+            if (balance === 0) return "q_0.00";
+            if (balance === price) return "q_exacto";
+            if (balance > price) return "q_vuelto";
+            return "q_" + balance.toFixed(2);
+        }
+
+        // --- VARIABLES DE LA MEF ---
+        let productSelected = null;
+        let priceSelected = 0;
+        let amountDeposited = 0;
+        let isDelivering = false;
+
+        // El "Estado" actual de la máquina (ej: q_0.00, q_exacto, q_vuelto)
+        let currentState = "q_0.00";
+
+        // Componentes del Grafo de Vis.js
+        let network = null;
+        let nodes = new vis.DataSet([]);
+        let edges = new vis.DataSet([]);
+
+        // Registro detallado del recorrido del usuario (nodos y aristas visitadas)
+        let visitedNodes = new Set();
+        let pathHistory = [{ state: "q_0.00", coin: null, balance: 0 }]; // Guarda el historial de estados y la moneda exacta usada
+
+        // Monedas disponibles en el sistema
+        const COINS = [0.10, 0.20, 0.50, 1.00, 2.00, 5.00];
+
+        // Mapa de productos a IDs de elementos
+        const productMap = {
+            'Gaseosa': 'prod-gaseosa',
+            'Galletas': 'prod-galletas',
+            'Papas': 'prod-papas',
+            'Chocolate': 'prod-chocolate',
+            'Agua': 'prod-agua',
+            'Jugo': 'prod-jugo',
+            'Energizante': 'prod-energizante',
+            'Gomitas': 'prod-gomitas',
+            'Sándwich': 'prod-sandwich'
+        };
+
+        // --- INICIALIZACIÓN ---
+        document.addEventListener("DOMContentLoaded", () => {
+            selectProduct('Agua', 1.50);
+        });
+
+        // --- INTERFAZ TABS ---
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            btnElement.classList.add('active');
+
+            if (tabId === 'graph') {
+                document.getElementById('tab-graph').style.display = 'block';
+                document.getElementById('graph-controls').style.display = 'flex';
+                if (network) {
+                    network.redraw();
+                    setTimeout(() => {
+                        resetGraphView();
+                    }, 50);
+                }
+            } else if (tabId === 'table') {
+                document.getElementById('tab-table').style.display = 'block';
+                document.getElementById('graph-controls').style.display = 'none';
+                document.getElementById('table-container').innerHTML = generateTransitionTable();
+            } else if (tabId === 'formal') {
+                document.getElementById('tab-formal').style.display = 'block';
+                document.getElementById('graph-controls').style.display = 'none';
+                document.getElementById('formal-container').innerHTML = generateFormalDefinition();
+            }
+        }
+
+        // --- LOGICA DE LA MÁQUINA ---
+        function selectProduct(name, price) {
+            if (isDelivering) return;
+
+            // Retirar cualquier producto pendiente en bandeja antes de iniciar nueva compra
+            let trayProd = document.getElementById('tray-product');
+            if (trayProd.style.display === 'block') {
+                trayProd.style.display = 'none';
+                trayProd.classList.remove('delivered-item');
+            }
+
+            // Si ya había dinero y cambias de producto, devolvemos el dinero anterior primero
+            if (amountDeposited > 0) {
+                cancelTransaction();
+            }
+
+            productSelected = name;
+            priceSelected = price;
+            amountDeposited = 0;
+            currentState = "q_0.00";
+
+            // Reiniciar recorrido
+            visitedNodes = new Set(["q_0.00"]);
+            pathHistory = [{ state: "q_0.00", coin: null, balance: 0 }];
+
+            // Cambiar estados de botones de producto visualmente
+            document.querySelectorAll('.product-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            let selectedId = productMap[name];
+            if (selectedId) {
+                document.getElementById(selectedId).classList.add('selected');
+            }
+
+            // Activar botones de monedas y botón de cancelar
+            document.querySelectorAll('.btn-coin').forEach(btn => {
+                btn.disabled = false;
+            });
+            document.getElementById('btn-cancel-trans').disabled = false;
+
+            // Generar el autómata COMPLETO para este producto
+            buildFullAutomaton(price, name);
+            updateUI();
+        }
+
+        function insertCoin(value) {
+            if (isDelivering || !productSelected) return;
+
+            playSound('coin');
+
+            amountDeposited = parseFloat((amountDeposited + value).toFixed(2));
+
+            // Determinar el nuevo estado
+            let nextState = getBalanceState(amountDeposited, priceSelected);
+
+            // Registrar el recorrido
+            visitedNodes.add(nextState);
+            pathHistory.push({ state: nextState, coin: value, balance: amountDeposited });
+            currentState = nextState;
+
+            // Verificar si se alcanzó o superó el precio requerido
+            if (amountDeposited >= priceSelected) {
+                isDelivering = true;
+                let change = parseFloat((amountDeposited - priceSelected).toFixed(2));
+
+                playSound('deliver');
+
+                document.getElementById('screen-status').innerText = `¡ENTREGANDO ${productSelected.toUpperCase()}! 📦`;
+                document.getElementById('screen-detail').innerText = change > 0 ? `Su vuelto es: S/. ${change.toFixed(2)}` : `Monto exacto ingresado.`;
+                document.getElementById('machine-screen').classList.add('delivering');
+
+                // Deshabilitar botones de interacción mientras se entrega
+                document.querySelectorAll('.btn-coin').forEach(btn => btn.disabled = true);
+                document.getElementById('btn-cancel-trans').disabled = true;
+
+                // Animación física en la bandeja
+                animateProductDelivery();
+
+                // Actualizar colores y aristas del grafo para mostrar recorrido final
+                highlightCurrentState();
+
+                // Reestablecer máquina al estado inicial para la siguiente compra después de 4s
+                setTimeout(() => {
+                    document.getElementById('machine-screen').classList.remove('delivering');
+                    resetMachine();
+                    isDelivering = false;
+                }, 4500);
+                return;
+            }
+
+            highlightCurrentState();
+            updateUI();
+        }
+
+        function animateProductDelivery() {
+            let trayProd = document.getElementById('tray-product');
+            let iconMap = {
+                'Gaseosa': '🥤',
+                'Galletas': '🍪',
+                'Papas': '🍟',
+                'Chocolate': '🍫',
+                'Agua': '💧',
+                'Jugo': '🧃',
+                'Energizante': '⚡',
+                'Gomitas': '🍬',
+                'Sándwich': '🥪'
+            };
+            trayProd.innerText = iconMap[productSelected] || '🎁';
+            trayProd.style.display = 'block';
+            trayProd.classList.add('delivered-item');
+        }
+
+        function collectProduct() {
+            let trayProd = document.getElementById('tray-product');
+            if (trayProd.style.display === 'block') {
+                trayProd.style.display = 'none';
+                trayProd.classList.remove('delivered-item');
+                playSound('coin'); // sound feedback
+
+                let originalStatus = "SELECCIONE UN PRODUCTO";
+                let originalDetail = "Monto depositado: S/. 0.00";
+
+                document.getElementById('screen-status').innerText = "¡GRACIAS POR SU COMPRA!";
+                document.getElementById('screen-detail').innerText = "Vuelva pronto";
+
+                setTimeout(() => {
+                    if (!productSelected) {
+                        document.getElementById('screen-status').innerText = originalStatus;
+                        document.getElementById('screen-detail').innerText = originalDetail;
+                    }
+                }, 2000);
+            }
+        }
+
+        function cancelTransaction() {
+            if (isDelivering) return;
+
+            if (amountDeposited > 0) {
+                playSound('cancel');
+                alert(`Transacción cancelada. Devolviendo S/. ${amountDeposited.toFixed(2)} en monedas.`);
+            }
+            resetMachine();
+        }
+
+        function resetMachine() {
+            productSelected = null;
+            priceSelected = 0;
+            amountDeposited = 0;
+            currentState = "q_0.00";
+            visitedNodes = new Set();
+            pathHistory = [{ state: "q_0.00", coin: null, balance: 0 }];
+
+            document.querySelectorAll('.product-item').forEach(item => item.classList.remove('selected'));
+            document.querySelectorAll('.btn-coin').forEach(btn => {
+                btn.disabled = true;
+            });
+            document.getElementById('btn-cancel-trans').disabled = true;
+
+            initGraph(); // Resetea el grafo
+            updateUI();
+        }
+
+        function updateUI() {
+            if (!productSelected) {
+                document.getElementById('screen-status').innerText = "SELECCIONE UN PRODUCTO";
+                document.getElementById('screen-detail').innerText = "Monto depositado: S/. 0.00";
+            } else {
+                let pending = parseFloat((priceSelected - amountDeposited).toFixed(2));
+                document.getElementById('screen-status').innerText = `${productSelected.toUpperCase()} — S/. ${priceSelected.toFixed(2)}`;
+                document.getElementById('screen-detail').innerText = `Depositado: S/. ${amountDeposited.toFixed(2)} | Falta: S/. ${pending.toFixed(2)}`;
+            }
+
+            // Actualizar vistas secundarias si están activas
+            if (document.getElementById('tab-table').style.display === 'block') {
+                document.getElementById('table-container').innerHTML = generateTransitionTable();
+            }
+            if (document.getElementById('tab-formal').style.display === 'block') {
+                document.getElementById('formal-container').innerHTML = generateFormalDefinition();
+            }
+
+            // Resaltar el nodo del estado actual en el Grafo
+            highlightCurrentState();
+        }
+
+        // Reutiliza buildFullAutomaton para inicializar el grafo
+        function initGraph() {
+            let price = priceSelected > 0 ? priceSelected : 1.50;
+            let name = productSelected ? productSelected : 'Agua';
+            buildFullAutomaton(price, name);
+        }
+
+        // Genera el autómata COMPLETO con labels adaptados al precio
+        function buildFullAutomaton(price, productName) {
+            nodes.clear();
+            edges.clear();
+
+            // 1. Generar la lista de estados en orden
+            const statesList = [];
+            statesList.push("q_0.00");
+            for (let b = 0.10; b < price - 0.005; b += 0.10) {
+                statesList.push("q_" + b.toFixed(2));
+            }
+            statesList.push("q_exacto");
+            statesList.push("q_vuelto");
+
+            // 2. Generar coordenadas dinámicamente
+            const K = statesList.length;
+            let cols = 5;
+            if (K > 35) cols = 8;
+            else if (K > 20) cols = 6;
+
+            const dx = 150;
+            const dy = 130;
+            const layout = {};
+
+            statesList.forEach((stateId, index) => {
+                let row = Math.floor(index / cols);
+                let col = index % cols;
+                // Snake layout (zig-zag)
+                if (row % 2 === 1) {
+                    col = (cols - 1) - col;
+                }
+                layout[stateId] = {
+                    x: col * dx - ((cols - 1) * dx) / 2,
+                    y: row * dy
+                };
+            });
+
+            // Centrar verticalmente ajustando el desfase
+            const totalRows = Math.ceil(K / cols);
+            const heightOffset = ((totalRows - 1) * dy) / 2;
+            statesList.forEach(stateId => {
+                layout[stateId].y -= heightOffset;
+            });
+
+            const dummyX = layout["q_0.00"].x - 80;
+            const dummyY = layout["q_0.00"].y;
+
+            // Nodo dummy invisible para la flecha de inicio
+            nodes.add({
+                id: "S_START_DUMMY",
+                x: dummyX,
+                y: dummyY,
+                size: 0,
+                color: { background: 'rgba(0,0,0,0)', border: 'rgba(0,0,0,0)' },
+                font: { size: 0, color: 'transparent' },
+                fixed: true,
+                physics: false
+            });
+
+            // 3. Agregar los nodos a Vis.js
+            statesList.forEach(key => {
+                let isStart = key === "q_0.00";
+                let isFinalExact = key === "q_exacto";
+                let isFinalChange = key === "q_vuelto";
+
+                let labelText = "";
+                if (isStart) {
+                    labelText = `Inicio\n(S/. 0.00)`;
+                } else if (isFinalExact) {
+                    labelText = `Pago Exacto\n(S/. ${price.toFixed(2)})`;
+                } else if (isFinalChange) {
+                    labelText = `Con Vuelto\n(> S/. ${price.toFixed(2)})`;
+                } else {
+                    let val = parseFloat(key.substring(2));
+                    labelText = `S/. ${val.toFixed(2)}`;
+                }
+
+                if (isFinalExact || isFinalChange) {
+                    const finalSize = 34;
+                    nodes.add({
+                        id: key,
+                        label: labelText,
+                        x: layout[key].x,
+                        y: layout[key].y,
+                        fixed: true,
+                        shape: 'custom',
+                        size: finalSize,
+                        chosen: false,
+                        ctxRenderer: ({ ctx, x, y, label }) => {
+                            const outerR = finalSize;
+                            const gap    = 4;
+                            const innerR = outerR - gap - 2;
+                            return {
+                                drawNode() {
+                                    let isCurrent = key === currentState;
+                                    let isVisited = visitedNodes.has(key);
+                                    
+                                    let colorHex = isFinalExact ? '#2ecc71' : '#e67e22';
+                                    if (isCurrent) {
+                                        colorHex = '#00ff88';
+                                    } else if (isVisited) {
+                                        colorHex = '#00cc6a';
+                                    }
+
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, outerR, 0, 2 * Math.PI);
+                                    ctx.fillStyle = '#151f30';
+                                    ctx.fill();
+
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, outerR - 1.5, 0, 2 * Math.PI);
+                                    ctx.strokeStyle = colorHex;
+                                    ctx.lineWidth = isCurrent ? 2.5 : 1.5;
+                                    ctx.stroke();
+
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, innerR, 0, 2 * Math.PI);
+                                    ctx.strokeStyle = colorHex;
+                                    ctx.lineWidth = isCurrent ? 2.5 : 1.5;
+                                    ctx.stroke();
+
+                                    const lines = label ? label.split('\n') : [];
+                                    const fSize = 8.5;
+                                    const lineH = fSize + 3;
+                                    ctx.font = `900 ${fSize}px Orbitron, sans-serif`;
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillStyle = colorHex;
+                                    const totalH = (lines.length - 1) * lineH;
+                                    lines.forEach((line, i) => {
+                                        ctx.fillText(line, x, y - totalH / 2 + i * lineH);
+                                    });
+                                },
+                                nodeDimensions: { width: outerR * 2, height: outerR * 2 }
+                            };
+                        }
+                    });
+                } else {
+                    nodes.add({
+                        id: key,
+                        label: labelText,
+                        x: layout[key].x,
+                        y: layout[key].y,
+                        fixed: true,
+                        borderWidth: isStart ? 3 : 2,
+                        color: isStart ? { background: '#2ecc71', border: '#27ae60' } : { background: '#1e293b', border: '#334155' },
+                        font: { color: isStart ? '#fff' : '#94a3b8', face: 'Orbitron, sans-serif', size: 9.5 },
+                        shape: 'circle',
+                        size: 24,
+                        chosen: false
+                    });
+                }
+            });
+
+            // 4. Generar transiciones de monedas reales
+            let addedEdges = new Set();
+
+            statesList.forEach(q_from => {
+                if (q_from === "q_exacto" || q_from === "q_vuelto") return;
+
+                let currentVal = q_from === "q_0.00" ? 0.00 : parseFloat(q_from.substring(2));
+
+                COINS.forEach(coin => {
+                    let nextS = parseFloat((currentVal + coin).toFixed(2));
+                    let q_to = getBalanceState(nextS, price);
+                    let edgeId = `edge_${q_from}_${q_to}_${coin.toFixed(2)}`;
+
+                    if (!addedEdges.has(edgeId)) {
+                        addedEdges.add(edgeId);
+
+                        let labelText = `+S/.${coin.toFixed(2)} / ∅`;
+                        if (q_to === "q_exacto") {
+                            labelText = `+S/.${coin.toFixed(2)} / Entregar`;
+                        } else if (q_to === "q_vuelto") {
+                            labelText = `+S/.${coin.toFixed(2)} / Entregar + Vuelto`;
+                        }
+
+                        edges.add({
+                            id: edgeId,
+                            from: q_from,
+                            to: q_to,
+                            label: labelText,
+                            color: { color: 'rgba(100, 116, 139, 0.12)' },
+                            width: 1,
+                            font: { size: 0, color: 'transparent', strokeWidth: 0, strokeColor: 'transparent' },
+                            arrows: { to: { enabled: true, scaleFactor: 0.4 } },
+                            smooth: { type: 'curvedCW', roundness: 0.2 },
+                            physics: false
+                        });
+                    }
+                });
+            });
+
+            // Flecha de entrada al estado inicial
+            edges.add({
+                id: "edge_start_to_init",
+                from: "S_START_DUMMY",
+                to: "q_0.00",
+                arrows: { to: { enabled: true, scaleFactor: 0.85 } },
+                color: { color: '#00bfff' },
+                width: 3.5,
+                physics: false
+            });
+
+            // Retornos estáticos a q_0.00 para nueva compra
+            edges.add({
+                id: "edge_q_exacto_q0_return",
+                from: "q_exacto",
+                to: "q_0.00",
+                label: "Nueva compra",
+                color: { color: 'rgba(100, 116, 139, 0.15)' },
+                width: 1.5,
+                font: { size: 8, color: '#64748b', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+                smooth: { type: 'curvedCW', roundness: 0.25 },
+                physics: false
+            });
+
+            edges.add({
+                id: "edge_q_vuelto_q0_return",
+                from: "q_vuelto",
+                to: "q_0.00",
+                label: "Nueva compra / Vuelto entregado",
+                color: { color: 'rgba(100, 116, 139, 0.15)' },
+                width: 1.5,
+                font: { size: 8, color: '#64748b', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+                smooth: { type: 'curvedCCW', roundness: 0.25 },
+                physics: false
+            });
+
+            const container = document.getElementById('network-container');
+            const data = { nodes: nodes, edges: edges };
+            const options = {
+                physics: { enabled: false },
+                edges: {
+                    arrows: { to: { enabled: true, scaleFactor: 0.7 } },
+                    smooth: { type: 'curvedCW', roundness: 0.15 },
+                    chosen: false
+                },
+                nodes: {
+                    chosen: false
+                },
+                interaction: {
+                    zoomView: true,
+                    dragView: true,
+                    dragNodes: true,
+                    hover: false
+                }
+            };
+            network = new vis.Network(container, data, options);
+
+            highlightCurrentState();
+
+            setTimeout(() => {
+                resetGraphView();
+            }, 100);
+        }
+
+        // --- DIBUJADO DINÁMICO DE ARISTAS Y RESALTADO DE NODOS ---
+        function highlightCurrentState() {
+            if (!productSelected) return;
+
+            // 1. Actualizar Nodos
+            nodes.get().forEach(node => {
+                if (node.id === "S_START_DUMMY") return;
+
+                let isVisited = visitedNodes.has(node.id);
+                let isCurrent = node.id === currentState;
+                let isFinalExact = node.id === "q_exacto";
+                let isFinalChange = node.id === "q_vuelto";
+
+                if (isFinalExact || isFinalChange) {
+                    let dynamicLabel = isFinalExact ? `Pago Exacto\n(S/. ${priceSelected.toFixed(2)})` : `Con Vuelto\n(> S/. ${priceSelected.toFixed(2)})`;
+                    if (isCurrent && isFinalChange) {
+                        let change = parseFloat((amountDeposited - priceSelected).toFixed(2));
+                        dynamicLabel = `✅ ENTREGADO\n(Vuelto: S/. ${change.toFixed(2)})`;
+                    } else if (isCurrent && isFinalExact) {
+                        dynamicLabel = `✅ ENTREGADO\n(Exacto)`;
+                    }
+
+                    nodes.update({
+                        id: node.id,
+                        label: dynamicLabel
+                    });
+                } else {
+                    let bgColor, borderColor, fontColor, borderW, nodeSize;
+                    if (isCurrent) {
+                        bgColor = '#00ff88';
+                        borderColor = '#00cc6a';
+                        fontColor = '#090d16';
+                        borderW = 4;
+                        nodeSize = 28;
+                    } else if (isVisited) {
+                        bgColor = 'rgba(0, 255, 136, 0.25)';
+                        borderColor = '#00cc6a';
+                        fontColor = '#00ff88';
+                        borderW = 2;
+                        nodeSize = 24;
+                    } else {
+                        bgColor = '#1e293b';
+                        borderColor = '#334155';
+                        fontColor = '#64748b';
+                        borderW = 1;
+                        nodeSize = 20;
+                    }
+
+                    nodes.update({
+                        id: node.id,
+                        color: { background: bgColor, border: borderColor },
+                        borderWidth: borderW,
+                        font: { color: fontColor },
+                        size: nodeSize
+                    });
+                }
+            });
+
+            // 2. Resetear todas las aristas a su estilo apagado por defecto
+            let edgeUpdates = [];
+            edges.get().forEach(edge => {
+                if (edge.id === "edge_start_to_init") {
+                    edgeUpdates.push({
+                        id: edge.id,
+                        color: { color: '#00bfff' },
+                        width: 3.5,
+                        font: { size: 0, color: 'transparent' },
+                        arrows: { to: { enabled: true, scaleFactor: 0.85 } }
+                    });
+                    return;
+                }
+                if (edge.id === "edge_q_exacto_q0_return" || edge.id === "edge_q_vuelto_q0_return") {
+                    let isMatchingReturn = (edge.id === "edge_q_exacto_q0_return" && currentState === "q_exacto") || (edge.id === "edge_q_vuelto_q0_return" && currentState === "q_vuelto");
+                    
+                    edgeUpdates.push({
+                        id: edge.id,
+                        color: { color: isMatchingReturn ? '#00bfff' : 'rgba(100, 116, 139, 0.15)' },
+                        width: isMatchingReturn ? 3.5 : 1.5,
+                        font: { size: 8, color: isMatchingReturn ? '#00bfff' : '#64748b' }
+                    });
+                    return;
+                }
+                edgeUpdates.push({
+                    id: edge.id,
+                    color: { color: 'rgba(100, 116, 139, 0.12)' },
+                    width: 1,
+                    font: { size: 0, color: 'transparent' },
+                    arrows: { to: { enabled: true, scaleFactor: 0.4 } }
+                });
+            });
+
+            // 3. Resaltar las posibles transiciones desde el estado actual
+            edges.get().forEach(edge => {
+                if (edge.from === currentState && edge.id !== "edge_q_exacto_q0_return" && edge.id !== "edge_q_vuelto_q0_return") {
+                    let up = edgeUpdates.find(u => u.id === edge.id);
+                    const coinMatch = edge.id.match(/_([0-9\.]+)$/);
+                    let coinValStr = coinMatch ? coinMatch[1] : "";
+                    let nextState = edge.to;
+                    
+                    let outputText = "∅";
+                    if (nextState === "q_exacto") {
+                        outputText = `Entregar`;
+                    } else if (nextState === "q_vuelto") {
+                        outputText = `Entregar+Vuelto`;
+                    }
+                    let labelText = `+S/.${coinValStr} / ${outputText}`;
+
+                    const newProps = {
+                        id: edge.id,
+                        color: { color: 'rgba(0, 191, 255, 0.45)' },
+                        width: 2.0,
+                        font: { size: 8, color: '#00bfff', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                        arrows: { to: { enabled: true, scaleFactor: 0.6 } }
+                    };
+
+                    if (up) {
+                        Object.assign(up, newProps);
+                    } else {
+                        edgeUpdates.push(newProps);
+                    }
+                }
+            });
+
+            // 4. Resaltar el camino que el usuario YA recorrió (en azul brillante) - Modelo Mealy: Entrada / Salida
+            for (let i = 0; i < pathHistory.length - 1; i++) {
+                let fromId = pathHistory[i].state;
+                let toId = pathHistory[i + 1].state;
+                let coinVal = pathHistory[i + 1].coin;
+                let currentBal = pathHistory[i + 1].balance;
+
+                let outputText = "∅";
+                if (toId === "q_exacto") {
+                    outputText = `Entregar ${productSelected}`;
+                } else if (toId === "q_vuelto") {
+                    let change = parseFloat((currentBal - priceSelected).toFixed(2));
+                    outputText = `Entregar ${productSelected}, Vuelto: S/.${change.toFixed(2)}`;
+                }
+
+                let edgeId = `edge_${fromId}_${toId}_${coinVal.toFixed(2)}`;
+                let up = edgeUpdates.find(u => u.id === edgeId);
+                const props = {
+                    id: edgeId,
+                    color: { color: '#00bfff' },
+                    width: 3.5,
+                    font: { size: 10, color: '#00bfff', strokeWidth: 3, strokeColor: '#090d16', face: 'Orbitron' },
+                    arrows: { to: { enabled: true, scaleFactor: 0.85 } }
+                };
+
+                if (up) {
+                    Object.assign(up, props);
+                } else {
+                    edgeUpdates.push(props);
+                }
+            }
+
+            edges.update(edgeUpdates);
+        }
+
+        // --- FUNCIONES DE GESTION DE TABLA Y DEF FORMAL ---
+        function generateTransitionTable() {
+            if (!productSelected) {
+                return `<div style="text-align: center; color: #94a3b8; padding: 60px 0; font-family: 'Orbitron', sans-serif;">SELECCIONE UN PRODUCTO PARA GENERAR LA TABLA DE TRANSICIÓN</div>`;
+            }
+
+            let html = `
+            <div class="table-responsive">
+                <table class="fsm-table">
+                    <thead>
+                        <tr>
+                            <th>Estado ($q$)</th>
+                            ${COINS.map(c => `<th>Insertar S/. ${c.toFixed(2)} ($a$)</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            const statesList = [];
+            statesList.push("q_0.00");
+            for (let b = 0.10; b < priceSelected - 0.005; b += 0.10) {
+                statesList.push("q_" + b.toFixed(2));
+            }
+            statesList.push("q_exacto");
+            statesList.push("q_vuelto");
+
+            statesList.forEach(stateId => {
+                let isCurrent = stateId === currentState;
+
+                html += `<tr class="${isCurrent ? 'row-active' : ''}">
+                    <td><strong>${stateId}</strong></td>`;
+
+                COINS.forEach(coin => {
+                    if (stateId === "q_exacto" || stateId === "q_vuelto") {
+                        html += `<td>
+                            <span class="next-state">q_0.00</span>
+                            <span class="output-val">Nueva compra</span>
+                        </td>`;
+                    } else {
+                        let currentVal = stateId === "q_0.00" ? 0.00 : parseFloat(stateId.substring(2));
+                        let nextVal = parseFloat((currentVal + coin).toFixed(2));
+                        let nextStateId = getBalanceState(nextVal, priceSelected);
+
+                        let transitionOutput = "∅";
+                        if (nextStateId === "q_exacto") {
+                            transitionOutput = "Entregar";
+                        } else if (nextStateId === "q_vuelto") {
+                            transitionOutput = "Entregar + Vuelto";
+                        }
+
+                        html += `<td>
+                            <span class="next-state">${nextStateId}</span>
+                            <span class="output-val">${transitionOutput}</span>
+                        </td>`;
+                    }
+                });
+
+                html += `</tr>`;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            </div>
+            `;
+            return html;
+        }
+
+        function generateFormalDefinition() {
+            if (!productSelected) {
+                return `<div style="text-align: center; color: #94a3b8; padding: 60px 0; font-family: 'Orbitron', sans-serif;">SELECCIONE UN PRODUCTO PARA GENERAR LA DEFINICIÓN FORMAL</div>`;
+            }
+
+            const statesList = [];
+            statesList.push("q_0.00");
+            for (let b = 0.10; b < priceSelected - 0.005; b += 0.10) {
+                statesList.push("q_" + b.toFixed(2));
+            }
+            statesList.push("q_exacto");
+            statesList.push("q_vuelto");
+
+            let statesStr;
+            if (statesList.length <= 15) {
+                statesStr = statesList.join(", ");
+            } else {
+                statesStr = `q_0.00, q_0.10, q_0.20, ..., q_${(priceSelected - 0.10).toFixed(2)}, q_exacto, q_vuelto`;
+            }
+
+            let html = `
+            <div class="formal-definition-content" style="font-family: 'Inter', sans-serif; line-height: 1.6; color: #cbd5e1; font-size: 0.88em; padding: 15px; background: rgba(0,0,0,0.2); border-radius:10px; border: 1px solid rgba(255,255,255,0.05);">
+                <h3 style="font-family: 'Orbitron', sans-serif; color: var(--screen-green); font-size: 1.1em; margin-bottom: 12px; border-bottom: 1px solid rgba(0,255,136,0.15); padding-bottom: 6px;">
+                    Modelo de Mealy para ${productSelected}
+                </h3>
+                <p>El autómata se describe como una 6-tupla formalmente configurada como $M = (Q, \\Sigma, \\Gamma, \\delta, \\lambda, q_0)$, donde:</p>
+                
+                <ul style="margin: 14px 0; padding-left: 20px; list-style-type: square; display: flex; flex-direction: column; gap: 12px;">
+                    <li><strong>$Q$ (Conjunto de estados posibles):</strong><br>
+                        Estados discretos definidos por la cantidad exacta acumulada.
+                        <code style="background:#090d16; padding: 6px 10px; border-radius: 6px; font-family: monospace; word-break: break-all; color:var(--neon-blue); display:block; margin-top:4px; border:1px solid rgba(255,255,255,0.03);">Q = { ${statesStr} }</code>
+                    </li>
+                    <li><strong>$\\Sigma$ (Alfabeto de entrada):</strong><br>
+                        Conjunto de monedas aceptadas por la ranura.
+                        <code style="background:#090d16; padding: 6px 10px; border-radius: 6px; font-family: monospace; color:var(--neon-blue); display:block; margin-top:4px; border:1px solid rgba(255,255,255,0.03);">&Sigma; = { S/. 0.10, S/. 0.20, S/. 0.50, S/. 1.00, S/. 2.00, S/. 5.00 }</code>
+                    </li>
+                    <li><strong>$\\Gamma$ (Alfabeto de salida):</strong><br>
+                        Conjunto de respuestas físicas del sistema.
+                        <code style="background:#090d16; padding: 6px 10px; border-radius: 6px; font-family: monospace; color:var(--neon-blue); display:block; margin-top:4px; border:1px solid rgba(255,255,255,0.03);">&Gamma; = { &empty;, "Entregar ${productSelected}", "Entregar ${productSelected} + Vuelto" }</code>
+                    </li>
+                    <li><strong>$\\delta$ (Función de transición: $Q \\times \\Sigma \\to Q$):</strong><br>
+                        Avanza al estado correspondiente según la suma exacta del saldo y la moneda ingresada.
+                        <code style="background:#090d16; padding: 10px; border-radius: 6px; font-family: monospace; color:#f1f5f9; display:block; margin-top:4px; line-height: 1.4; border:1px solid rgba(255,255,255,0.03);">
+                             &delta;(q_saldo, c) = q_{saldo + c} &nbsp; (siendo saldo + c &lt; precio de S/. ${priceSelected.toFixed(2)})<br>
+                             &delta;(q_saldo, c) = q_{exacto} &nbsp; (si saldo + c = S/. ${priceSelected.toFixed(2)})<br>
+                             &delta;(q_saldo, c) = q_{vuelto} &nbsp; (si saldo + c &gt; S/. ${priceSelected.toFixed(2)})
+                        </code>
+                    </li>
+                    <li><strong>$\\lambda$ (Función de salida: $Q \\times \\Sigma \\to \\Gamma$):</strong><br>
+                        Determina la acción según el saldo actual y la moneda ingresada.
+                        <code style="background:#090d16; padding: 10px; border-radius: 6px; font-family: monospace; color:#f1f5f9; display:block; margin-top:4px; line-height: 1.4; border:1px solid rgba(255,255,255,0.03);">
+                            &lambda;(q_saldo, c) = &empty; &nbsp;si saldo + c &lt; S/. ${priceSelected.toFixed(2)}<br>
+                            &lambda;(q_saldo, c) = "Entregar ${productSelected}" &nbsp;si saldo + c = S/. ${priceSelected.toFixed(2)}<br>
+                            &lambda;(q_saldo, c) = "Entregar ${productSelected} + Vuelto" &nbsp;si saldo + c &gt; S/. ${priceSelected.toFixed(2)}
+                        </code>
+                    </li>
+                    <li><strong>$q_0$ (Estado de inicio):</strong><br>
+                        Estado base de la máquina al iniciar una transacción (0.00 depositado).
+                        <code style="background:#090d16; padding: 6px 10px; border-radius: 6px; font-family: monospace; color:var(--screen-green); display:inline-block; margin-top:4px; border:1px solid rgba(255,255,255,0.03);">q_0 = q_0.00</code>
+                    </li>
+                </ul>
+            </div>
+            `;
+            return html;
+        }
+
+        // --- FUNCIONES DE NAVEGACIÓN Y ZOOM DEL GRAFO ---
+        function zoomGraph(factor) {
+            if (network) {
+                let currentScale = network.getScale();
+                network.moveTo({
+                    scale: currentScale * factor,
+                    animation: { duration: 300, easingFunction: 'easeInOutQuad' }
+                });
+            }
+        }
+
+        function resetGraphView() {
+            if (network) {
+                network.fit({
+                    animation: { duration: 400, easingFunction: 'easeInOutQuad' }
+                });
+            }
+        }
+
+        // Alternar el panel del grafo FSM
+        function toggleFSMPanel() {
+            const panel = document.getElementById('fsm-panel');
+            const btn = document.getElementById('toggle-panel-btn');
+            const isCollapsed = panel.classList.toggle('collapsed');
+            
+            if (isCollapsed) {
+                btn.classList.remove('active');
+                btn.innerHTML = `<span class="icon">📊</span> Ver Grafo y Análisis FSM`;
+            } else {
+                btn.classList.add('active');
+                btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis`;
+                
+                // Redibujar y adaptar el grafo al tamaño recién renderizado
+                setTimeout(() => {
+                    if (network) {
+                        network.redraw();
+                        resetGraphView();
+                    }
+                }, 450); // Un poco después de finalizar la transición de 400ms
+            }
+        }
+    </script>
+</body>
+
+</html>
