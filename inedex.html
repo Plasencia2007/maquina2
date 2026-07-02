@@ -11,17 +11,26 @@
         rel="stylesheet">
     <style>
         :root {
-            --machine-body: #b0b8c1;
-            --machine-dark: #374151;
-            --machine-darker: #1f2937;
-            --machine-border: #4b5563;
-            --glass-bg: rgba(15, 23, 42, 0.85);
+            --cyber-black: #080c10;
+            --cyber-dark: #0f141c;
+            --cyber-slate: #171d26;
+            --cyber-blue: #00f0ff;
+            --cyber-magenta: #ff007f;
+            --cyber-green: #00ff66;
+            --cyber-purple: #8a2be2;
+            --cyber-yellow: #ffd700;
+            
+            --machine-body: #0f141c;
+            --machine-dark: #171d26;
+            --machine-darker: #080c10;
+            --machine-border: #00f0ff;
+            --glass-bg: rgba(15, 20, 28, 0.75);
             --screen-green: #00ff88;
-            --screen-amber: #ffcc00;
-            --accent-red: #ef4444;
-            --accent-red-dark: #b91c1c;
-            --shelf-color: rgba(0, 255, 136, 0.25);
-            --neon-blue: #00bfff;
+            --screen-amber: #ffd700;
+            --accent-red: #ff007f;
+            --accent-red-dark: #99004c;
+            --shelf-color: rgba(0, 240, 255, 0.2);
+            --neon-blue: #00f0ff;
         }
 
         * {
@@ -32,27 +41,54 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #020617 100%);
+            background: radial-gradient(circle at 50% 50%, #15102a 0%, #080612 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 30px 20px;
-            color: #f1f5f9;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Cyberpunk scanlines on background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 0;
         }
 
         header {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2em;
-            color: var(--screen-green);
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-            letter-spacing: 2px;
+            font-size: 2.3em;
+            color: var(--cyber-blue);
+            text-shadow: 
+                0 0 10px rgba(0, 240, 255, 0.5),
+                0 0 20px rgba(0, 240, 255, 0.2),
+                2px 2px 0px rgba(255, 0, 127, 0.5);
+            letter-spacing: 3px;
             font-weight: 900;
+            text-transform: uppercase;
         }
 
         header p {
@@ -64,7 +100,7 @@
         .main-layout {
             display: flex;
             gap: 40px;
-            max-width: 1400px;
+            max-width: 1800px;
             width: 100%;
             justify-content: center;
             align-items: flex-start;
@@ -75,15 +111,14 @@
            MÁQUINA EXPENDEDORA - CUERPO PRINCIPAL
            ============================================ */
         .vending-machine {
-            width: 880px;
-            background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 30%, #6b7280 100%);
+            width: 1100px;
+            background: linear-gradient(135deg, #0a0d14 0%, #131822 50%, #0a0d14 100%);
             border-radius: 24px;
-            border: 4px solid #4b5563;
+            border: 3px solid var(--cyber-blue);
             box-shadow:
-                0 10px 0 #374151,
-                0 20px 0 #1f2937,
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                inset 0 3px 0 rgba(255, 255, 255, 0.4);
+                0 0 35px rgba(0, 240, 255, 0.35),
+                0 15px 40px rgba(0, 0, 0, 0.8),
+                inset 0 0 25px rgba(0, 240, 255, 0.15);
             position: relative;
             overflow: hidden;
             padding-bottom: 5px;
@@ -94,54 +129,63 @@
             display: flex;
             gap: 0;
             margin: 0;
+            background: rgba(8, 12, 18, 0.3);
         }
 
         /* Barra superior de la máquina */
         .machine-header {
-            background: linear-gradient(180deg, var(--accent-red) 0%, var(--accent-red-dark) 100%);
-            padding: 16px 20px;
+            background: linear-gradient(90deg, #090c12 0%, #1a152e 30%, #30103b 50%, #1a152e 70%, #090c12 100%);
+            padding: 22px 24px;
             text-align: center;
-            border-bottom: 4px solid #7f1d1d;
+            border-bottom: 3px solid var(--cyber-magenta);
             position: relative;
+            box-shadow: 0 4px 20px rgba(255, 0, 127, 0.2);
         }
 
         .machine-header::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: -3px;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--cyber-magenta), transparent);
+            box-shadow: 0 0 10px var(--cyber-magenta);
         }
 
         .machine-brand {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
+            font-size: 1.9em;
             font-weight: 900;
             color: #fff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: 4px;
+            text-shadow: 
+                0 0 10px var(--cyber-magenta),
+                0 0 20px var(--cyber-magenta),
+                0 0 30px rgba(255, 0, 127, 0.5);
+            letter-spacing: 6px;
+            text-transform: uppercase;
         }
 
         /* VITRINA DE PRODUCTOS */
         .product-showcase {
             flex: 1;
             margin: 14px 0 14px 14px;
-            background: var(--glass-bg);
-            border-radius: 12px;
-            border: 3px solid #1e293b;
+            background: rgba(10, 15, 24, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            border: 2px solid rgba(0, 240, 255, 0.2);
             padding: 4px 0 0 0;
             overflow: hidden;
             box-shadow:
-                inset 0 0 40px rgba(0, 0, 0, 0.8),
-                0 0 15px rgba(0, 255, 136, 0.05);
+                inset 0 0 40px rgba(0, 240, 255, 0.15),
+                0 0 20px rgba(0, 240, 255, 0.05);
             position: relative;
         }
 
         /* Panel lateral derecho de controles */
         .control-side {
-            width: 280px;
+            width: 360px;
             display: flex;
             flex-direction: column;
             margin: 14px 14px 14px 10px;
@@ -169,15 +213,15 @@
             display: flex;
             justify-content: space-around;
             align-items: flex-end;
-            padding: 20px 10px 6px 10px;
-            border-bottom: 4px solid var(--shelf-color);
-            background: linear-gradient(180deg, transparent 80%, rgba(0, 255, 136, 0.05) 100%);
+            padding: 26px 12px 10px 12px;
+            border-bottom: 2px solid rgba(0, 240, 255, 0.2);
+            background: linear-gradient(180deg, transparent 80%, rgba(0, 240, 255, 0.03) 100%);
             position: relative;
         }
 
         .shelf:last-child {
             border-bottom: none;
-            padding-bottom: 12px;
+            padding-bottom: 18px;
         }
 
         /* Soporte físico del estante */
@@ -187,10 +231,10 @@
             bottom: 0;
             left: 2px;
             right: 2px;
-            height: 4px;
-            background: linear-gradient(180deg, #475569, #334155);
-            border-radius: 0 0 2px 2px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-magenta), var(--cyber-blue));
+            box-shadow: 0 0 8px var(--cyber-blue);
+            border-radius: 2px;
         }
 
         .product-item {
@@ -198,39 +242,50 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            padding: 6px 4px;
-            border-radius: 10px;
+            padding: 10px 8px;
+            border-radius: 12px;
+            background: rgba(23, 29, 38, 0.35);
+            border: 1px solid rgba(0, 240, 255, 0.1);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 1;
             width: 30%;
-            border: 1px solid transparent;
         }
 
         .product-item:hover {
-            background: rgba(0, 255, 136, 0.08);
-            border-color: rgba(0, 255, 136, 0.2);
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.4);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
         }
 
         .product-item.selected {
-            background: rgba(0, 255, 136, 0.15);
-            border-color: var(--screen-green);
-            box-shadow:
-                0 0 15px rgba(0, 255, 136, 0.25),
-                inset 0 0 8px rgba(0, 255, 136, 0.1);
+            background: rgba(255, 0, 127, 0.15);
+            border-color: var(--cyber-magenta);
+            animation: selectedPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes selectedPulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(255, 0, 127, 0.45), inset 0 0 8px rgba(255, 0, 127, 0.2);
+                border-color: rgba(255, 0, 127, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 0, 127, 0.7), inset 0 0 15px rgba(255, 0, 127, 0.35);
+                border-color: rgba(255, 0, 127, 1);
+            }
         }
 
         .product-item.selected .product-code {
-            background: var(--screen-green);
-            color: #0f172a;
-            box-shadow: 0 0 8px var(--screen-green);
+            background: var(--cyber-magenta);
+            color: #fff;
+            box-shadow: 0 0 10px var(--cyber-magenta);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .product-icon {
-            font-size: 3.0em;
-            margin-bottom: 4px;
+            font-size: 4.2em;
+            margin-bottom: 6px;
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
             transition: transform 0.3s;
         }
@@ -240,10 +295,10 @@
         }
 
         .product-name {
-            font-size: 0.85em;
+            font-size: 1.05em;
             color: #cbd5e1;
             font-weight: 700;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
@@ -253,23 +308,23 @@
 
         .product-price {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.8em;
-            color: var(--screen-green);
+            font-size: 0.95em;
+            color: var(--cyber-green);
             font-weight: 700;
-            text-shadow: 0 0 4px rgba(0, 255, 136, 0.3);
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
         }
 
         .product-code {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75em;
-            background: #334155;
-            color: #e2e8f0;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-bottom: 6px;
+            font-size: 0.90em;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cyber-blue);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
             font-weight: 900;
             transition: all 0.25s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.25);
         }
 
         /* PANEL DE CONTROL */
@@ -285,7 +340,7 @@
             background: #050a12;
             border: 3px solid #1e3a5f;
             border-radius: 14px;
-            padding: 16px;
+            padding: 26px;
             position: relative;
             overflow: hidden;
             box-shadow:
@@ -334,7 +389,7 @@
 
         .led-screen .status {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.82em;
+            font-size: 1.3em;
             color: var(--screen-green);
             text-shadow:
                 0 0 8px rgba(0, 255, 136, 0.8),
@@ -350,7 +405,7 @@
 
         .led-screen .detail {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.62em;
+            font-size: 1.05em;
             color: var(--screen-amber);
             text-shadow:
                 0 0 6px rgba(255, 204, 0, 0.7),
@@ -365,17 +420,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2px 0;
+            padding: 4px 0;
         }
 
         .detail-label {
             color: #64748b;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
 
         .detail-value {
             color: var(--screen-amber);
             font-weight: 900;
+            font-size: 1.1em;
         }
 
         .detail-value.deposited {
@@ -391,15 +447,15 @@
         .detail-value.change {
             color: #fbbf24;
             text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
-            font-size: 1.3em;
+            font-size: 1.45em;
         }
 
         /* Barra de progreso */
         .screen-progress {
-            margin-top: 8px;
-            height: 6px;
+            margin-top: 14px;
+            height: 10px;
             background: #1e293b;
-            border-radius: 3px;
+            border-radius: 5px;
             overflow: hidden;
             position: relative;
             z-index: 1;
@@ -417,59 +473,65 @@
 
         /* Estado entregando */
         .led-screen.delivering {
-            border-color: #00ff88;
+            border-color: var(--cyber-green);
             box-shadow:
                 inset 0 0 30px rgba(0, 0, 0, 0.8),
-                0 0 25px rgba(0, 255, 136, 0.4),
-                0 0 50px rgba(0, 255, 136, 0.15);
+                0 0 35px rgba(0, 255, 102, 0.6),
+                0 0 60px rgba(0, 255, 102, 0.2);
             animation: deliverPulse 0.8s ease infinite;
         }
 
         @keyframes deliverPulse {
-            0%, 100% { box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,136,0.4), 0 0 50px rgba(0,255,136,0.15); }
-            50% { box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 35px rgba(0,255,136,0.6), 0 0 70px rgba(0,255,136,0.25); }
+            0%, 100% { 
+                box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,102,0.4), 0 0 50px rgba(0,255,102,0.15); 
+                border-color: rgba(0, 255, 102, 0.6);
+            }
+            50% { 
+                box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 40px rgba(0,255,102,0.8), 0 0 80px rgba(0,255,102,0.3); 
+                border-color: rgba(0, 255, 102, 1);
+            }
         }
 
         /* Panel de monedas */
         .coin-panel {
-            background: linear-gradient(180deg, #475569 0%, #334155 100%);
-            border-radius: 12px;
-            padding: 10px;
-            border: 2px solid #64748b;
+            background: linear-gradient(135deg, #0e121a 0%, #171d28 100%);
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid rgba(0, 240, 255, 0.25);
             box-shadow:
-                inset 0 2px 4px rgba(255, 255, 255, 0.1),
-                0 4px 6px rgba(0, 0, 0, 0.15);
+                inset 0 1px 3px rgba(255, 255, 255, 0.05),
+                0 10px 30px rgba(0, 0, 0, 0.6);
+            position: relative;
         }
 
         .coin-panel-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.58em;
-            color: #e2e8f0;
+            font-size: 0.72em;
+            color: var(--cyber-blue);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
             text-align: center;
             font-weight: 900;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
         }
 
         .coin-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px 8px;
+            gap: 14px 10px;
             justify-items: center;
         }
 
         .btn-coin {
-            width: 58px;
-            height: 58px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
-            color: #1e293b;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.7em;
+            font-size: 0.88em;
             font-weight: 900;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             display: flex;
             align-items: center;
@@ -480,14 +542,14 @@
 
         /* Monedas Plateadas (10c, 20c, 50c, S/.1) */
         .coin-silver {
-            border: 3px solid #94a3b8;
-            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 45%, #cbd5e1 70%, #64748b 100%);
             box-shadow:
-                0 4px 0 #64748b,
-                0 6px 8px rgba(0, 0, 0, 0.4),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
-                inset 0 2px 4px rgba(255, 255, 255, 0.6);
-            color: #334155;
+                0 4px 0 #334155,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            color: #1e293b;
+            border: 2px solid #94a3b8;
         }
 
         .coin-silver::before {
@@ -498,20 +560,20 @@
             right: 4px;
             bottom: 4px;
             border-radius: 50%;
-            border: 1.5px dashed rgba(148, 163, 184, 0.4);
+            border: 1.5px dashed rgba(100, 116, 139, 0.4);
         }
 
-        /* Monedas Bimetálicas (S/.2, S/.5) - Centro dorado, anillo plateado */
+        /* Monedas Bimetálicas (S/.2, S/.5) */
         .coin-bimetallic {
-            border: 3px solid #94a3b8;
-            background: radial-gradient(circle, #eab308 0%, #eab308 42%, #94a3b8 44%, #cbd5e1 75%, #64748b 100%);
+            background: radial-gradient(circle at 50% 50%, #facc15 0%, #eab308 40%, #e2e8f0 43%, #cbd5e1 75%, #64748b 100%);
             box-shadow:
-                0 4px 0 #64748b,
-                0 6px 8px rgba(0, 0, 0, 0.4),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
-                inset 0 2px 4px rgba(255, 255, 255, 0.6);
-            color: #1e293b;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+                0 4px 0 #334155,
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            color: #0f172a;
+            border: 2px solid #94a3b8;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         .coin-bimetallic::before {
@@ -522,38 +584,39 @@
             right: 4px;
             bottom: 4px;
             border-radius: 50%;
-            border: 1.5px dashed rgba(234, 179, 8, 0.3);
+            border: 1.5px dashed rgba(234, 179, 8, 0.45);
         }
 
         .btn-coin:hover:not(:disabled) {
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.06) rotate(6deg);
             box-shadow:
-                0 7px 0 #475569,
-                0 9px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.15),
-                inset 0 2px 4px rgba(255, 255, 255, 0.6);
+                0 8px 0 #334155,
+                0 10px 16px rgba(0, 240, 255, 0.35),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .btn-coin:active:not(:disabled) {
-            transform: translateY(4px);
+            transform: translateY(4px) scale(0.96);
             box-shadow:
-                0 0px 0 #475569,
+                0 0px 0 #334155,
                 0 2px 4px rgba(0, 0, 0, 0.4),
-                inset 0 2px 4px rgba(0, 0, 0, 0.25);
+                inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .btn-coin:disabled {
-            background: radial-gradient(circle at 35% 35%, #94a3b8, #64748b 50%, #475569 100%) !important;
-            border-color: #475569 !important;
-            color: #334155 !important;
-            box-shadow: 0 2px 0 #334155, 0 3px 5px rgba(0, 0, 0, 0.3) !important;
+            background: radial-gradient(circle at 35% 35%, #475569, #334155 50%, #1e293b 100%) !important;
+            border-color: #334155 !important;
+            color: #1e293b !important;
+            box-shadow: 0 2px 0 #0f172a, 0 3px 5px rgba(0, 0, 0, 0.4) !important;
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.35;
             transform: none !important;
+            text-shadow: none !important;
         }
 
         .btn-coin:disabled::before {
-            border-color: rgba(71, 85, 105, 0.3) !important;
+            border-color: rgba(30, 41, 59, 0.2) !important;
         }
 
         /* Ranura de monedas */
@@ -562,92 +625,117 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-top: 10px;
+            margin-top: 14px;
         }
 
         .slot-hole {
-            width: 44px;
-            height: 6px;
-            background: linear-gradient(180deg, #020617, #1e293b);
-            border-radius: 3px;
-            border: 1.5px solid #475569;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+            width: 56px;
+            height: 8px;
+            background: #020406;
+            border-radius: 4px;
+            border: 2px solid var(--cyber-blue);
+            box-shadow: 
+                0 0 10px rgba(0, 240, 255, 0.5),
+                inset 0 2px 4px rgba(0, 0, 0, 0.95);
         }
 
         .slot-label {
-            font-size: 0.58em;
-            color: #94a3b8;
-            font-weight: 700;
+            font-size: 0.7em;
+            color: var(--cyber-blue);
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
         }
 
         /* Botón cancelar */
         .btn-cancel {
-            background: linear-gradient(180deg, var(--accent-red), var(--accent-red-dark));
+            background: repeating-linear-gradient(
+                45deg,
+                var(--accent-red),
+                var(--accent-red) 12px,
+                var(--accent-red-dark) 12px,
+                var(--accent-red-dark) 24px
+            );
             color: white;
-            border: 2px solid #7f1d1d;
-            padding: 11px;
-            border-radius: 10px;
+            border: 2px solid var(--cyber-magenta);
+            padding: 14px;
+            border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.62em;
+            font-size: 0.78em;
             font-weight: 900;
             cursor: pointer;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             box-shadow:
-                0 4px 0 #7f1d1d,
-                0 6px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.1s;
+                0 4px 0 var(--accent-red-dark),
+                0 6px 15px rgba(255, 0, 127, 0.3);
+            transition: all 0.15s ease;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
 
         .btn-cancel:hover:not(:disabled) {
-            background: linear-gradient(180deg, #f87171, var(--accent-red));
-            transform: translateY(-1px);
+            filter: brightness(1.15);
+            transform: translateY(-2px);
             box-shadow:
-                0 5px 0 #7f1d1d,
-                0 7px 14px rgba(0, 0, 0, 0.35);
+                0 6px 0 var(--accent-red-dark),
+                0 10px 20px rgba(255, 0, 127, 0.45);
         }
 
         .btn-cancel:active:not(:disabled) {
             transform: translateY(4px);
-            box-shadow: 0 0 0 #7f1d1d;
+            box-shadow: 0 0px 0 var(--accent-red-dark);
         }
 
         .btn-cancel:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
             transform: none !important;
-            box-shadow: 0 2px 0 #475569, 0 3px 5px rgba(0, 0, 0, 0.2);
-            background: #4b5563;
-            border-color: #374151;
+            box-shadow: 0 2px 0 #1e293b, 0 3px 5px rgba(0, 0, 0, 0.3);
+            background: #1e293b;
+            border-color: #0f172a;
+            color: #475569;
         }
 
         /* Bandeja de entrega */
         .delivery-tray {
             margin: 0;
-            height: 56px;
-            background: linear-gradient(180deg, #1e293b, #0f172a);
-            border-radius: 0 0 14px 14px;
-            border: 2px solid #475569;
+            height: 76px;
+            background: linear-gradient(180deg, #06090e, #0c1017);
+            border-radius: 0 0 16px 16px;
+            border: 2px solid rgba(0, 240, 255, 0.35);
             border-top: none;
             box-shadow:
-                inset 0 8px 16px rgba(0, 0, 0, 0.95),
-                0 2px 4px rgba(0, 0, 0, 0.4);
+                inset 0 10px 25px rgba(0, 0, 0, 0.95),
+                0 0 15px rgba(0, 240, 255, 0.15);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            transition: all 0.3s;
             margin-top: auto;
+            overflow: hidden;
+        }
+
+        /* Cyberpunk style background for tray */
+        .delivery-tray::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 0);
+            background-size: 8px 8px;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .delivery-tray::before {
             content: 'RETIRAR PRODUCTO';
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.65em;
-            color: #475569;
-            letter-spacing: 2.5px;
+            font-size: 0.8em;
+            color: rgba(0, 240, 255, 0.4);
+            letter-spacing: 3px;
             pointer-events: none;
+            z-index: 2;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.2);
         }
 
         .tray-flap {
@@ -656,34 +744,44 @@
             left: 20px;
             right: 20px;
             height: 4px;
-            background: linear-gradient(90deg, #334155, #64748b, #334155);
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-magenta), var(--cyber-blue));
+            box-shadow: 0 0 8px var(--cyber-blue);
             border-radius: 0 0 3px 3px;
+            z-index: 3;
         }
 
         /* Patas de la máquina */
         .machine-feet {
             display: flex;
             justify-content: space-between;
-            padding: 0 34px;
+            padding: 0 48px;
+            position: relative;
+            z-index: 1;
         }
 
         .foot {
-            width: 44px;
-            height: 10px;
-            background: linear-gradient(180deg, #374151, #111827);
+            width: 60px;
+            height: 12px;
+            background: linear-gradient(180deg, #101520, #04060a);
             border-radius: 0 0 6px 6px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-top: none;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
         }
 
         .diagram-panel {
             flex: 1;
             min-width: 450px;
             max-width: 700px;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            background: linear-gradient(135deg, rgba(16, 20, 28, 0.92) 0%, rgba(8, 12, 18, 0.95) 100%);
             border-radius: 20px;
-            border: 1px solid rgba(100, 130, 160, 0.3);
+            border: 2px solid rgba(0, 240, 255, 0.25);
             padding: 24px;
-            box-shadow: 0 10px 45px rgba(0, 0, 0, 0.5);
+            box-shadow: 
+                0 0 30px rgba(0, 240, 255, 0.12),
+                0 15px 45px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 1;
             transform: scale(1);
@@ -704,12 +802,33 @@
             overflow: hidden;
         }
 
+        /* Pantalla Completa para Grafo FSM */
+        .diagram-panel.fullscreen {
+            position: fixed;
+            top: 2vh;
+            left: 2vw;
+            width: 96vw;
+            height: 96vh;
+            max-width: none;
+            z-index: 9999;
+            display: block !important;
+            opacity: 1 !important;
+            transform: none !important;
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
+            transition: none;
+        }
+
+        .diagram-panel.fullscreen #network-container {
+            height: calc(96vh - 120px) !important;
+        }
+
         /* Botón de alternancia de FSM */
         .toggle-fsm-btn {
             margin-top: 15px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: #cbd5e1;
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, #0e121a 0%, #151a24 100%);
+            color: var(--cyber-blue);
+            border: 2px solid rgba(0, 240, 255, 0.35);
             border-radius: 30px;
             padding: 10px 24px;
             font-family: 'Orbitron', sans-serif;
@@ -725,17 +844,17 @@
         }
 
         .toggle-fsm-btn:hover {
-            color: var(--screen-green);
-            border-color: var(--screen-green);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            color: #fff;
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
             transform: translateY(-2px);
         }
 
         .toggle-fsm-btn.active {
-            background: var(--screen-green);
-            color: #020617;
-            border-color: var(--screen-green);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            background: var(--cyber-blue);
+            color: #080c10;
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
         }
 
         .toggle-fsm-btn .icon {
@@ -744,9 +863,9 @@
 
         /* Botones de Pestañas */
         .tab-btn {
-            background: #1e293b;
+            background: #080c10;
             color: #94a3b8;
-            border: 1px solid rgba(100, 130, 160, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.2);
             border-radius: 8px;
             padding: 8px 16px;
             font-size: 0.78em;
@@ -757,16 +876,16 @@
         }
 
         .tab-btn:hover {
-            color: var(--screen-green);
-            border-color: rgba(0, 255, 136, 0.3);
-            background: rgba(0, 255, 136, 0.04);
+            color: var(--cyber-magenta);
+            border-color: rgba(255, 0, 127, 0.4);
+            background: rgba(255, 0, 127, 0.05);
         }
 
         .tab-btn.active {
-            background: var(--screen-green);
-            color: #020617;
-            border-color: var(--screen-green);
-            box-shadow: 0 0 12px rgba(0, 255, 136, 0.35);
+            background: var(--cyber-magenta);
+            color: #fff;
+            border-color: var(--cyber-magenta);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
         }
 
         .tab-content {
@@ -776,16 +895,16 @@
 
         #network-container {
             height: 480px;
-            border: 1px solid rgba(100, 130, 160, 0.2);
+            border: 2px solid rgba(0, 240, 255, 0.25);
             border-radius: 12px;
-            background: rgba(8, 12, 21, 0.85);
-            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+            background: rgba(5, 8, 12, 0.95);
+            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85);
         }
 
         .graph-btn {
-            background: #1e293b;
-            color: var(--screen-green);
-            border: 1px solid rgba(0, 255, 136, 0.25);
+            background: #080c10;
+            color: var(--cyber-blue);
+            border: 1px solid rgba(0, 240, 255, 0.3);
             border-radius: 6px;
             padding: 6px 12px;
             font-size: 0.8em;
@@ -793,13 +912,13 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .graph-btn:hover {
-            background: var(--screen-green);
-            color: #020617;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            background: var(--cyber-blue);
+            color: #080c10;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
             transform: translateY(-1px);
         }
 
@@ -813,9 +932,10 @@
             margin-top: 12px;
             line-height: 1.5;
             padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.35);
             border-radius: 8px;
-            border-left: 4px solid var(--screen-green);
+            border-left: 4px solid var(--cyber-blue);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
         }
 
         /* Estilos Tabla de Transición */
@@ -823,9 +943,9 @@
             max-height: 480px;
             overflow-y: auto;
             border-radius: 12px;
-            border: 1px solid rgba(100, 130, 160, 0.2);
-            background: #090d16;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 240, 255, 0.2);
+            background: #04060a;
+            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.8);
         }
 
         .fsm-table {
@@ -839,41 +959,43 @@
         .fsm-table th,
         .fsm-table td {
             padding: 12px;
-            border: 1px solid rgba(100, 130, 160, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.1);
             text-align: center;
         }
 
         .fsm-table th {
-            background: #1e293b;
-            color: var(--screen-green);
+            background: #0e121a;
+            color: var(--cyber-blue);
             font-family: 'Orbitron', sans-serif;
             font-size: 0.75em;
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 0 1px 0 rgba(100, 130, 160, 0.2);
+            box-shadow: 0 2px 0 rgba(0, 240, 255, 0.2);
         }
 
         .fsm-table tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(255, 255, 255, 0.005);
         }
 
         .fsm-table tr.row-active {
-            background: rgba(0, 255, 136, 0.12) !important;
-            border: 2px solid var(--screen-green);
+            background: rgba(255, 0, 127, 0.12) !important;
+            border: 2px solid var(--cyber-magenta);
         }
 
         .fsm-table tr.row-active td {
             color: #ffffff;
             font-weight: 500;
+            text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
         }
 
         .next-state {
             display: block;
             font-family: 'Orbitron', sans-serif;
             font-weight: bold;
-            color: var(--neon-blue);
+            color: var(--cyber-blue);
             font-size: 0.9em;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.3);
         }
 
         .output-val {
@@ -927,7 +1049,7 @@
         }
 
         /* Responsive */
-        @media (max-width: 1250px) {
+        @media (max-width: 1600px) {
             .main-layout {
                 flex-direction: column;
                 align-items: center;
@@ -936,11 +1058,11 @@
             .diagram-panel {
                 min-width: unset;
                 width: 100%;
-                max-width: 880px;
+                max-width: 1100px;
             }
         }
 
-        @media (max-width: 920px) {
+        @media (max-width: 1150px) {
             .vending-machine {
                 width: 95vw;
                 min-width: 340px;
@@ -965,7 +1087,7 @@
         <h1>Máquina de Estados Finitos (MEF)</h1>
         <p>Simulador Pedagógico de Expendedora Automática (Modelo de Mealy)</p>
         <button id="toggle-panel-btn" class="toggle-fsm-btn" onclick="toggleFSMPanel()">
-            <span class="icon">📊</span> Ver Grafo y Análisis FSM
+            <span class="icon">📊</span> Ver Grafo y Análisis [G]
         </button>
     </header>
 
@@ -1110,6 +1232,7 @@
                     <button class="graph-btn" onclick="zoomGraph(1.2)" title="Acercar">＋</button>
                     <button class="graph-btn" onclick="zoomGraph(0.8)" title="Alejar">－</button>
                     <button class="graph-btn" onclick="resetGraphView()" title="Ajustar y Centrar">🎯 Centrar</button>
+                    <button class="graph-btn" onclick="toggleFullscreenGraph()" title="Pantalla Completa [G]" style="display: flex; align-items: center; gap: 4px;">🖥️ Pantalla Completa [G]</button>
                 </div>
             </div>
 
@@ -1344,7 +1467,7 @@
                 document.getElementById('screen-status').innerText = `¡ENTREGANDO ${productSelected.toUpperCase()}! 📦`;
                 document.getElementById('screen-detail').innerHTML = change > 0 
                     ? `<div class="detail-line" style="margin-top:4px;"><span class="detail-label">SU VUELTO:</span><span class="detail-value change">S/. ${change.toFixed(2)}</span></div>`
-                    : `<div style="color:#00ff88; font-size:1.1em; margin-top:4px; text-shadow: 0 0 10px rgba(0,255,136,0.8);">✅ MONTO EXACTO INGRESADO</div>`;
+                    : `<div style="color:#00ff88; font-size:1.25em; margin-top:4px; text-shadow: 0 0 10px rgba(0,255,136,0.8);">✅ MONTO EXACTO INGRESADO</div>`;
                 document.getElementById('screen-progress-bar').style.width = '100%';
                 document.getElementById('screen-progress-bar').style.background = 'linear-gradient(90deg, #00ff88, #fbbf24)';
                 document.getElementById('machine-screen').classList.add('delivering');
@@ -1614,16 +1737,16 @@
                                     let isCurrent = key === currentState;
                                     let isVisited = visitedNodes.has(key);
                                     
-                                    let colorHex = isFinalExact ? '#2ecc71' : '#e67e22';
+                                    let colorHex = isFinalExact ? '#00ff66' : '#ff007f';
                                     if (isCurrent) {
-                                        colorHex = '#00ff88';
+                                        colorHex = '#00ff66';
                                     } else if (isVisited) {
-                                        colorHex = '#00cc6a';
+                                        colorHex = '#00f0ff';
                                     }
 
                                     ctx.beginPath();
                                     ctx.arc(x, y, outerR, 0, 2 * Math.PI);
-                                    ctx.fillStyle = '#151f30';
+                                    ctx.fillStyle = '#080c10';
                                     ctx.fill();
 
                                     ctx.beginPath();
@@ -1662,8 +1785,8 @@
                         y: layout[key].y,
                         fixed: true,
                         borderWidth: isStart ? 3 : 2,
-                        color: isStart ? { background: '#2ecc71', border: '#27ae60' } : { background: '#1e293b', border: '#334155' },
-                        font: { color: isStart ? '#fff' : '#94a3b8', face: 'Orbitron, sans-serif', size: 9.5 },
+                        color: isStart ? { background: '#00ff66', border: '#00cc52' } : { background: '#080c10', border: 'rgba(0, 240, 255, 0.4)' },
+                        font: { color: isStart ? '#080c10' : '#00f0ff', face: 'Orbitron, sans-serif', size: 9.5 },
                         shape: 'circle',
                         size: 24,
                         chosen: false
@@ -1699,11 +1822,11 @@
                             from: q_from,
                             to: q_to,
                             label: labelText,
-                            color: { color: 'rgba(100, 116, 139, 0.12)' },
-                            width: 1,
+                            color: { color: 'rgba(255, 255, 255, 0.35)' },
+                            width: 1.5,
                             font: { size: 0, color: 'transparent', strokeWidth: 0, strokeColor: 'transparent' },
                             arrows: { to: { enabled: true, scaleFactor: 0.4 } },
-                            smooth: { type: 'curvedCW', roundness: 0.2 },
+                            smooth: { type: 'curvedCW', roundness: 0.25 },
                             physics: false
                         });
                     }
@@ -1716,7 +1839,7 @@
                 from: "S_START_DUMMY",
                 to: "q_0.00",
                 arrows: { to: { enabled: true, scaleFactor: 0.85 } },
-                color: { color: '#00bfff' },
+                color: { color: '#00f0ff' },
                 width: 3.5,
                 physics: false
             });
@@ -1727,9 +1850,9 @@
                 from: "q_exacto",
                 to: "q_0.00",
                 label: "Nueva compra",
-                color: { color: 'rgba(100, 116, 139, 0.15)' },
+                color: { color: 'rgba(255, 255, 255, 0.35)' },
                 width: 1.5,
-                font: { size: 8, color: '#64748b', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                font: { size: 8, color: '#94a3b8', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
                 arrows: { to: { enabled: true, scaleFactor: 0.5 } },
                 smooth: { type: 'curvedCW', roundness: 0.25 },
                 physics: false
@@ -1740,9 +1863,9 @@
                 from: "q_vuelto",
                 to: "q_0.00",
                 label: "Nueva compra / Vuelto entregado",
-                color: { color: 'rgba(100, 116, 139, 0.15)' },
+                color: { color: 'rgba(255, 255, 255, 0.35)' },
                 width: 1.5,
-                font: { size: 8, color: '#64748b', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                font: { size: 8, color: '#94a3b8', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
                 arrows: { to: { enabled: true, scaleFactor: 0.5 } },
                 smooth: { type: 'curvedCCW', roundness: 0.25 },
                 physics: false
@@ -1805,22 +1928,22 @@
                 } else {
                     let bgColor, borderColor, fontColor, borderW, nodeSize;
                     if (isCurrent) {
-                        bgColor = '#00ff88';
-                        borderColor = '#00cc6a';
-                        fontColor = '#090d16';
+                        bgColor = '#00ff66';
+                        borderColor = '#00f0ff';
+                        fontColor = '#080c10';
                         borderW = 4;
                         nodeSize = 28;
                     } else if (isVisited) {
-                        bgColor = 'rgba(0, 255, 136, 0.25)';
-                        borderColor = '#00cc6a';
-                        fontColor = '#00ff88';
+                        bgColor = 'rgba(0, 240, 255, 0.15)';
+                        borderColor = '#00f0ff';
+                        fontColor = '#00f0ff';
                         borderW = 2;
                         nodeSize = 24;
                     } else {
-                        bgColor = '#1e293b';
-                        borderColor = '#334155';
-                        fontColor = '#64748b';
-                        borderW = 1;
+                        bgColor = '#080c10';
+                        borderColor = 'rgba(0, 240, 255, 0.3)';
+                        fontColor = 'rgba(0, 240, 255, 0.6)';
+                        borderW = 1.5;
                         nodeSize = 20;
                     }
 
@@ -1852,16 +1975,16 @@
                     
                     edgeUpdates.push({
                         id: edge.id,
-                        color: { color: isMatchingReturn ? '#00bfff' : 'rgba(100, 116, 139, 0.15)' },
+                        color: { color: isMatchingReturn ? '#00f0ff' : 'rgba(255, 255, 255, 0.35)' },
                         width: isMatchingReturn ? 3.5 : 1.5,
-                        font: { size: 8, color: isMatchingReturn ? '#00bfff' : '#64748b' }
+                        font: { size: 8, color: isMatchingReturn ? '#00f0ff' : '#94a3b8', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' }
                     });
                     return;
                 }
                 edgeUpdates.push({
                     id: edge.id,
-                    color: { color: 'rgba(100, 116, 139, 0.12)' },
-                    width: 1,
+                    color: { color: 'rgba(255, 255, 255, 0.35)' },
+                    width: 1.5,
                     font: { size: 0, color: 'transparent' },
                     arrows: { to: { enabled: true, scaleFactor: 0.4 } }
                 });
@@ -1885,9 +2008,9 @@
 
                     const newProps = {
                         id: edge.id,
-                        color: { color: 'rgba(0, 191, 255, 0.45)' },
-                        width: 2.0,
-                        font: { size: 8, color: '#00bfff', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
+                        color: { color: '#ff007f' },
+                        width: 2.5,
+                        font: { size: 8.5, color: '#ff007f', strokeWidth: 2, strokeColor: '#090d16', face: 'Orbitron' },
                         arrows: { to: { enabled: true, scaleFactor: 0.6 } }
                     };
 
@@ -1918,9 +2041,9 @@
                 let up = edgeUpdates.find(u => u.id === edgeId);
                 const props = {
                     id: edgeId,
-                    color: { color: '#00bfff' },
+                    color: { color: '#00f0ff' },
                     width: 3.5,
-                    font: { size: 10, color: '#00bfff', strokeWidth: 3, strokeColor: '#090d16', face: 'Orbitron' },
+                    font: { size: 10, color: '#00f0ff', strokeWidth: 3, strokeColor: '#090d16', face: 'Orbitron' },
                     arrows: { to: { enabled: true, scaleFactor: 0.85 } }
                 };
 
@@ -2091,14 +2214,20 @@
         function toggleFSMPanel() {
             const panel = document.getElementById('fsm-panel');
             const btn = document.getElementById('toggle-panel-btn');
+            
+            if (panel.classList.contains('fullscreen')) {
+                toggleFullscreenGraph();
+                return;
+            }
+            
             const isCollapsed = panel.classList.toggle('collapsed');
             
             if (isCollapsed) {
                 btn.classList.remove('active');
-                btn.innerHTML = `<span class="icon">📊</span> Ver Grafo y Análisis FSM`;
+                btn.innerHTML = `<span class="icon">📊</span> Ver Grafo y Análisis [G]`;
             } else {
                 btn.classList.add('active');
-                btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis`;
+                btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis [G]`;
                 
                 // Redibujar y adaptar el grafo al tamaño recién renderizado
                 setTimeout(() => {
@@ -2109,6 +2238,53 @@
                 }, 450); // Un poco después de finalizar la transición de 400ms
             }
         }
+
+        // Toggles fullscreen graph view
+        function toggleFullscreenGraph() {
+            const panel = document.getElementById('fsm-panel');
+            const btn = document.getElementById('toggle-panel-btn');
+            const isNowFullscreen = panel.classList.toggle('fullscreen');
+            
+            if (isNowFullscreen) {
+                document.body.style.overflow = 'hidden';
+                panel.classList.remove('collapsed');
+                btn.classList.add('active');
+                btn.innerHTML = `<span class="icon">✕</span> Cerrar Grafo [G]`;
+                
+                // Switch to graph tab if not already active
+                const graphTabBtn = document.querySelector('.tab-buttons button');
+                if (graphTabBtn) {
+                    switchTab('graph', graphTabBtn);
+                }
+            } else {
+                document.body.style.overflow = '';
+                btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis [G]`;
+            }
+            
+            setTimeout(() => {
+                if (network) {
+                    network.setSize('100%', '100%');
+                    network.redraw();
+                    network.fit({
+                        animation: { duration: 300, easingFunction: 'easeInOutQuad' }
+                    });
+                }
+            }, 250);
+        }
+
+        // Keydown shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            if (e.key === 'g' || e.key === 'G') {
+                toggleFullscreenGraph();
+            } else if (e.key === 'Escape') {
+                const panel = document.getElementById('fsm-panel');
+                if (panel.classList.contains('fullscreen')) {
+                    toggleFullscreenGraph();
+                }
+            }
+        });
     </script>
 </body>
 
