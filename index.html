@@ -2170,14 +2170,15 @@
 
                 let labelText = "";
                 if (isStart) {
-                    labelText = `Inicio\n(S/. 0.00)`;
+                    labelText = `q0\nS/. 0.00`;
                 } else if (isFinalExact) {
-                    labelText = `Pago Exacto\n(S/. ${price.toFixed(2)})`;
+                    labelText = `q_exact\nS/. ${price.toFixed(2)}`;
                 } else if (isFinalChange) {
-                    labelText = `Con Vuelto\n(> S/. ${price.toFixed(2)})`;
+                    labelText = `q_vuelt\n> S/. ${price.toFixed(2)}`;
                 } else {
                     let val = parseFloat(key.substring(2));
-                    labelText = `S/. ${val.toFixed(2)}`;
+                    let stateNum = Math.round(val * 100);
+                    labelText = `q${stateNum}\nS/. ${val.toFixed(2)}`;
                 }
 
                 if (isFinalExact || isFinalChange) {
@@ -2241,18 +2242,64 @@
                         }
                     });
                 } else {
+                    const normalSize = 26;
                     nodes.add({
                         id: key,
                         label: labelText,
                         x: layout[key].x,
                         y: layout[key].y,
                         fixed: true,
-                        borderWidth: isStart ? 3 : 2,
-                        color: isStart ? { background: '#00ff66', border: '#00cc52' } : { background: '#080c10', border: 'rgba(0, 240, 255, 0.4)' },
-                        font: { color: isStart ? '#080c10' : '#00f0ff', face: 'Orbitron, sans-serif', size: 9.5 },
-                        shape: 'circle',
-                        size: 24,
-                        chosen: false
+                        shape: 'custom',
+                        size: normalSize,
+                        chosen: false,
+                        ctxRenderer: ({ ctx, x, y, label }) => {
+                            const outerR = normalSize;
+                            return {
+                                drawNode() {
+                                    let isCurrent = key === currentState;
+                                    let isVisited = visitedNodes.has(key);
+
+                                    let borderHex = 'rgba(0, 240, 255, 0.4)';
+                                    let textHex = '#00f0ff';
+                                    let bgHex = '#080c10';
+
+                                    if (isCurrent) {
+                                        borderHex = '#00ff66';
+                                        textHex = '#00ff66';
+                                    } else if (isStart) {
+                                        borderHex = '#00cc52';
+                                        textHex = '#00ff66';
+                                    } else if (isVisited) {
+                                        borderHex = '#00f0ff';
+                                        textHex = '#00f0ff';
+                                    }
+
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, outerR, 0, 2 * Math.PI);
+                                    ctx.fillStyle = bgHex;
+                                    ctx.fill();
+
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, outerR - 1.5, 0, 2 * Math.PI);
+                                    ctx.strokeStyle = borderHex;
+                                    ctx.lineWidth = isCurrent ? 2.5 : 1.5;
+                                    ctx.stroke();
+
+                                    const lines = label ? label.split('\n') : [];
+                                    const fSize = 8;
+                                    const lineH = fSize + 3;
+                                    ctx.font = `900 ${fSize}px Orbitron, sans-serif`;
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillStyle = textHex;
+                                    const totalH = (lines.length - 1) * lineH;
+                                    lines.forEach((line, i) => {
+                                        ctx.fillText(line, x, y - totalH / 2 + i * lineH);
+                                    });
+                                },
+                                nodeDimensions: { width: outerR * 2, height: outerR * 2 }
+                            };
+                        }
                     });
                 }
             });
