@@ -1220,28 +1220,33 @@
         /* Animación de entrega */
         @keyframes deliverProduct {
             0% {
-                transform: translateY(-30px);
+                transform: translateY(-80px) scale(0.9, 1.1) rotate(-15deg);
                 opacity: 0;
             }
-
+            25% {
+                transform: translateY(0) scale(1.0, 1.0) rotate(0deg);
+                opacity: 1;
+            }
             40% {
-                transform: translateY(8px);
-                opacity: 1;
+                transform: translateY(-16px) scale(1.1, 0.9) rotate(8deg);
             }
-
+            55% {
+                transform: translateY(0) scale(0.95, 1.05) rotate(0deg);
+            }
             70% {
-                transform: translateY(-4px);
-                opacity: 1;
+                transform: translateY(-6px) scale(1.02, 0.98) rotate(-4deg);
             }
-
+            85% {
+                transform: translateY(0) scale(1.0, 1.0) rotate(2deg);
+            }
             100% {
-                transform: translateY(0);
+                transform: translateY(0) scale(1.0, 1.0) rotate(0deg);
                 opacity: 1;
             }
         }
-
+ 
         .delivered-item {
-            animation: deliverProduct 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: deliverProduct 1.2s ease-in-out forwards;
         }
 
         @keyframes pulseGlow {
@@ -1260,6 +1265,104 @@
             animation: pulseGlow 0.8s ease-in-out infinite;
         }
 
+        /* Panel del Teclado */
+        .keypad-panel {
+            background: linear-gradient(135deg, #0e121a 0%, #171d28 100%);
+            border-radius: 16px;
+            padding: 14px;
+            border: 2px solid rgba(255, 0, 127, 0.25);
+            box-shadow:
+                inset 0 1px 3px rgba(255, 255, 255, 0.05),
+                0 10px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+ 
+        .keypad-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72em;
+            color: var(--cyber-magenta);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            font-weight: 900;
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
+        }
+ 
+        .keypad-display {
+            background: #020406;
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            border-radius: 6px;
+            padding: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            color: var(--cyber-magenta);
+            text-align: center;
+            letter-spacing: 4px;
+            font-weight: bold;
+            box-shadow: inset 0 0 8px rgba(255, 0, 127, 0.2);
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+ 
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+ 
+        .btn-key {
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            outline: none;
+        }
+ 
+        .btn-key:hover:not(:disabled) {
+            background: rgba(255, 0, 127, 0.15);
+            border-color: var(--cyber-magenta);
+            color: #fff;
+            box-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+            transform: translateY(-1px);
+        }
+ 
+        .btn-key:active {
+            transform: translateY(1px);
+        }
+ 
+        .btn-key-clear {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            outline: none;
+        }
+ 
+        .btn-key-clear:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+        }
+ 
         /* Responsive */
         @media (max-width: 1600px) {
             .main-layout {
@@ -1390,6 +1493,21 @@
                             <div class="status" id="screen-status">SELECCIONE UN PRODUCTO</div>
                             <div class="detail" id="screen-detail">Monto depositado: S/. 0.00</div>
                             <div class="screen-progress"><div class="screen-progress-bar" id="screen-progress-bar"></div></div>
+                        </div>
+
+                        <!-- Panel de Selección (Teclado Alfanumérico) -->
+                        <div class="keypad-panel">
+                            <div class="keypad-label">Teclado de Selección</div>
+                            <div class="keypad-display" id="keypad-display">__</div>
+                            <div class="keypad-grid">
+                                <button class="btn-key" onclick="pressKey('A')">A</button>
+                                <button class="btn-key" onclick="pressKey('B')">B</button>
+                                <button class="btn-key" onclick="pressKey('C')">C</button>
+                                <button class="btn-key" onclick="pressKey('1')">1</button>
+                                <button class="btn-key" onclick="pressKey('2')">2</button>
+                                <button class="btn-key" onclick="pressKey('3')">3</button>
+                            </div>
+                            <button class="btn-key-clear" onclick="clearKeypad()">✕ BORRAR</button>
                         </div>
 
                         <!-- Panel de monedas -->
@@ -1552,6 +1670,14 @@
                     playCoinClink(0.08, 950);
                     playCoinClink(0.16, 1200);
                     playCoinClink(0.24, 1050);
+                } else if (type === 'thud') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(140.00, now);
+                    osc.frequency.exponentialRampToValueAtTime(35.00, now + 0.18);
+                    gain.gain.setValueAtTime(0.35, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
                 }
             } catch (e) {
                 console.warn("Web Audio API no inicializada o bloqueada por navegador:", e);
@@ -1693,6 +1819,11 @@
 
             // Generar el autómata COMPLETO para este producto
             buildFullAutomaton(priceSelected, name);
+            
+            // Sincronizar el teclado de selección
+            keypadSelection = productCodeMap[name] || "";
+            updateKeypadDisplay();
+
             updateUI();
         }
 
@@ -1756,6 +1887,11 @@
 
         function animateProductDelivery() {
             let trayProd = document.getElementById('tray-product');
+            
+            setTimeout(() => {
+                playSound('thud');
+            }, 300);
+
             let imageMap = {
                 'Gaseosa': 'images/prod_gaseosa.png',
                 'Galletas': 'images/prod_galletas.png',
@@ -1839,6 +1975,11 @@
             document.getElementById('btn-cancel-trans').disabled = true;
 
             initGraph(); // Resetea el grafo
+            
+            // Limpiar la selección del teclado
+            keypadSelection = "";
+            updateKeypadDisplay();
+
             updateUI();
         }
 
@@ -2648,6 +2789,87 @@
                         }
                     }
                 }
+            }
+        }
+
+        // --- GESTIÓN DEL TECLADO DE SELECCIÓN ---
+        let keypadSelection = "";
+
+        const codeMap = {
+            'A1': { name: 'Gaseosa', price: 2.50 },
+            'A2': { name: 'Galletas', price: 1.20 },
+            'A3': { name: 'Papas', price: 2.20 },
+            'B1': { name: 'Chocolate', price: 3.50 },
+            'B2': { name: 'Agua', price: 1.50 },
+            'B3': { name: 'Jugo', price: 2.00 },
+            'C1': { name: 'Energizante', price: 4.50 },
+            'C2': { name: 'Gomitas', price: 1.80 },
+            'C3': { name: 'Sándwich', price: 5.00 }
+        };
+
+        const productCodeMap = {
+            'Gaseosa': 'A1',
+            'Galletas': 'A2',
+            'Papas': 'A3',
+            'Chocolate': 'B1',
+            'Agua': 'B2',
+            'Jugo': 'B3',
+            'Energizante': 'C1',
+            'Gomitas': 'C2',
+            'Sándwich': 'C3'
+        };
+
+        function pressKey(key) {
+            if (isDelivering) return;
+            playSound('coin');
+
+            if (keypadSelection.length >= 2) {
+                keypadSelection = "";
+            }
+
+            keypadSelection += key;
+            updateKeypadDisplay();
+
+            if (keypadSelection.length === 2) {
+                const prodInfo = codeMap[keypadSelection];
+                if (prodInfo) {
+                    setTimeout(() => {
+                        selectProduct(prodInfo.name, productPrices[prodInfo.name] || prodInfo.price);
+                    }, 200);
+                } else {
+                    playSound('cancel');
+                    const displayEl = document.getElementById('keypad-display');
+                    displayEl.style.color = '#ff007f';
+                    displayEl.style.borderColor = '#ff007f';
+                    displayEl.style.boxShadow = '0 0 10px rgba(255, 0, 127, 0.5)';
+                    
+                    setTimeout(() => {
+                        keypadSelection = "";
+                        updateKeypadDisplay();
+                        displayEl.style.color = '';
+                        displayEl.style.borderColor = '';
+                        displayEl.style.boxShadow = '';
+                    }, 1000);
+                }
+            }
+        }
+
+        function clearKeypad() {
+            if (isDelivering) return;
+            playSound('cancel');
+            keypadSelection = "";
+            updateKeypadDisplay();
+        }
+
+        function updateKeypadDisplay() {
+            const displayEl = document.getElementById('keypad-display');
+            if (!displayEl) return;
+            if (keypadSelection.length === 0) {
+                displayEl.innerText = "__";
+            } else if (keypadSelection.length === 1) {
+                displayEl.innerText = keypadSelection + "_";
+            } else {
+                displayEl.innerText = keypadSelection;
             }
         }
 
