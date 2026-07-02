@@ -823,6 +823,201 @@
             height: calc(96vh - 120px) !important;
         }
 
+        /* Modal de Configuración de Precios */
+        .price-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 6, 10, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .price-modal-content {
+            background: linear-gradient(135deg, #101520 0%, #080c12 100%);
+            border: 2px solid var(--cyber-blue);
+            border-radius: 16px;
+            width: 480px;
+            max-width: 90vw;
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.25);
+            padding: 24px;
+            color: #fff;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .price-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .price-modal-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            color: var(--cyber-blue);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            margin: 0;
+        }
+
+        .price-modal-close {
+            background: transparent;
+            border: none;
+            color: #ff007f;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .price-modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        .price-inputs-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Scrollbar para la lista de inputs */
+        .price-inputs-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        .price-inputs-grid::-webkit-scrollbar-thumb {
+            background: var(--cyber-blue);
+            border-radius: 3px;
+        }
+
+        .price-input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .price-input-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .price-input-field-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-green);
+        }
+
+        .price-input-field {
+            background: #04060a;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            width: 80px;
+            padding: 4px 8px;
+            text-align: right;
+        }
+
+        .price-input-field:focus {
+            outline: none;
+            border-color: var(--cyber-magenta);
+            box-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
+        }
+
+        .price-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-save-btn {
+            background: linear-gradient(135deg, #00ff66 0%, #00b347 100%);
+            color: #080c10;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 0.85em;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+            transition: all 0.2s;
+        }
+
+        .modal-save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+        }
+
+        .modal-cancel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Botón Configurar Precios */
+        .btn-config-prices {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px dashed rgba(0, 240, 255, 0.35);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8em;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-config-prices:hover {
+            color: #fff;
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
         /* Botón de alternancia de FSM */
         .toggle-fsm-btn {
             margin-top: 15px;
@@ -1200,6 +1395,9 @@
                         <!-- Botón cancelar -->
                         <button class="btn-cancel" id="btn-cancel-trans" onclick="cancelTransaction()" disabled>✕ CANCELAR /
                             SOLICITAR VUELTO</button>
+                        
+                        <!-- Botón configurar precios -->
+                        <button class="btn-config-prices" id="btn-config-prices" onclick="openPriceConfigModal()">⚙️ CONFIGURAR PRECIOS</button>
                     </div>
 
                     <!-- Bandeja de entrega -->
@@ -1327,6 +1525,18 @@
         }
 
         // --- VARIABLES DE LA MEF ---
+        const productPrices = {
+            'Gaseosa': 2.50,
+            'Galletas': 1.20,
+            'Papas': 2.20,
+            'Chocolate': 3.50,
+            'Agua': 1.50,
+            'Jugo': 2.00,
+            'Energizante': 4.50,
+            'Gomitas': 1.80,
+            'Sándwich': 5.00
+        };
+
         let productSelected = null;
         let priceSelected = 0;
         let amountDeposited = 0;
@@ -1414,7 +1624,7 @@
             }
 
             productSelected = name;
-            priceSelected = price;
+            priceSelected = productPrices[name] || price;
             amountDeposited = 0;
             currentState = "q_0.00";
 
@@ -1438,7 +1648,7 @@
             document.getElementById('btn-cancel-trans').disabled = false;
 
             // Generar el autómata COMPLETO para este producto
-            buildFullAutomaton(price, name);
+            buildFullAutomaton(priceSelected, name);
             updateUI();
         }
 
@@ -2272,6 +2482,97 @@
             }, 250);
         }
 
+        // --- GESTIÓN DE CONFIGURACIÓN DE PRECIOS ---
+        function openPriceConfigModal() {
+            // Cancel transaction if any in progress
+            if (amountDeposited > 0) {
+                cancelTransaction();
+            }
+
+            const container = document.getElementById('price-inputs-container');
+            container.innerHTML = '';
+
+            for (let name in productPrices) {
+                let currentVal = productPrices[name];
+                container.innerHTML += `
+                <div class="price-input-row">
+                    <span class="price-input-label">${name}</span>
+                    <div class="price-input-field-container">
+                        <span>S/.</span>
+                        <input type="number" step="0.10" min="0.10" class="price-input-field" data-product="${name}" value="${currentVal.toFixed(2)}">
+                    </div>
+                </div>
+                `;
+            }
+
+            document.getElementById('price-modal').style.display = 'flex';
+        }
+
+        function closePriceConfigModal() {
+            document.getElementById('price-modal').style.display = 'none';
+        }
+
+        function saveNewPrices() {
+            const inputs = document.querySelectorAll('.price-input-field');
+            let tempPrices = {};
+            let errors = [];
+
+            inputs.forEach(input => {
+                let name = input.getAttribute('data-product');
+                let value = parseFloat(input.value);
+
+                if (isNaN(value) || value <= 0) {
+                    errors.push(`El precio de ${name} debe ser un número positivo.`);
+                } else {
+                    // Check if value is multiple of 0.10 within floating-point tolerance
+                    let remainder = (value * 10) % 1;
+                    if (Math.abs(remainder) > 0.0001 && Math.abs(remainder - 1) > 0.0001) {
+                        errors.push(`El precio de ${name} (S/. ${value.toFixed(2)}) debe ser múltiplo de S/. 0.10.`);
+                    } else {
+                        tempPrices[name] = parseFloat(value.toFixed(2));
+                    }
+                }
+            });
+
+            if (errors.length > 0) {
+                alert("Errores de validación:\n" + errors.join("\n"));
+                return;
+            }
+
+            // Save prices
+            for (let name in tempPrices) {
+                productPrices[name] = tempPrices[name];
+            }
+
+            // Update UI showcase price labels
+            updateProductCardsUI();
+
+            // Close modal
+            closePriceConfigModal();
+
+            // Refresh FSM diagram of the currently selected product if any
+            if (productSelected) {
+                // Cancel active transaction to prevent state mismatches
+                cancelTransaction();
+                selectProduct(productSelected, productPrices[productSelected]);
+            }
+        }
+
+        function updateProductCardsUI() {
+            for (let name in productPrices) {
+                let elementId = productMap[name];
+                if (elementId) {
+                    let card = document.getElementById(elementId);
+                    if (card) {
+                        let priceDiv = card.querySelector('.product-price');
+                        if (priceDiv) {
+                            priceDiv.innerText = `S/. ${productPrices[name].toFixed(2)}`;
+                        }
+                    }
+                }
+            }
+        }
+
         // Keydown shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -2286,6 +2587,28 @@
             }
         });
     </script>
+
+    <!-- Modal de Configuración de Precios -->
+    <div id="price-modal" class="price-modal-overlay" style="display: none;">
+        <div class="price-modal-content">
+            <div class="price-modal-header">
+                <h2>⚙️ Configurar Precios</h2>
+                <button class="price-modal-close" onclick="closePriceConfigModal()">✕</button>
+            </div>
+            <div class="price-modal-body">
+                <p style="margin-bottom: 15px; color: #cbd5e1; font-size: 0.85em; line-height: 1.4;">
+                    Ingresa los nuevos precios para los productos. Los precios deben ser múltiplos de <strong>S/. 0.10</strong> para que los grafos FSM se generen correctamente.
+                </p>
+                <div class="price-inputs-grid" id="price-inputs-container">
+                    <!-- Generado dinámicamente -->
+                </div>
+            </div>
+            <div class="price-modal-footer">
+                <button class="modal-save-btn" onclick="saveNewPrices()">Guardar Cambios</button>
+                <button class="modal-cancel-btn" onclick="closePriceConfigModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
