@@ -284,10 +284,19 @@
         }
 
         .product-icon {
-            font-size: 4.2em;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 6px;
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
             transition: transform 0.3s;
+        }
+
+        .product-icon img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .product-item:hover .product-icon {
@@ -1312,19 +1321,19 @@
                     <div class="shelf">
                         <div class="product-item" id="prod-gaseosa" onclick="selectProduct('Gaseosa', 2.50)">
                             <div class="product-code">A1</div>
-                            <div class="product-icon">🥤</div>
+                            <div class="product-icon"><img src="images/prod_gaseosa.png" alt="Gaseosa"></div>
                             <div class="product-name">Gaseosa</div>
                             <div class="product-price">S/. 2.50</div>
                         </div>
                         <div class="product-item" id="prod-galletas" onclick="selectProduct('Galletas', 1.20)">
                             <div class="product-code">A2</div>
-                            <div class="product-icon">🍪</div>
+                            <div class="product-icon"><img src="images/prod_galletas.png" alt="Galletas"></div>
                             <div class="product-name">Galletas</div>
                             <div class="product-price">S/. 1.20</div>
                         </div>
                         <div class="product-item" id="prod-papas" onclick="selectProduct('Papas', 2.20)">
                             <div class="product-code">A3</div>
-                            <div class="product-icon">🍟</div>
+                            <div class="product-icon"><img src="images/prod_papas.png" alt="Papas Fritas"></div>
                             <div class="product-name">Papas Fritas</div>
                             <div class="product-price">S/. 2.20</div>
                         </div>
@@ -1333,19 +1342,19 @@
                     <div class="shelf">
                         <div class="product-item" id="prod-chocolate" onclick="selectProduct('Chocolate', 3.50)">
                             <div class="product-code">B1</div>
-                            <div class="product-icon">🍫</div>
+                            <div class="product-icon"><img src="images/prod_chocolate.png" alt="Chocolate"></div>
                             <div class="product-name">Chocolate</div>
                             <div class="product-price">S/. 3.50</div>
                         </div>
                         <div class="product-item" id="prod-agua" onclick="selectProduct('Agua', 1.50)">
                             <div class="product-code">B2</div>
-                            <div class="product-icon">💧</div>
+                            <div class="product-icon"><img src="images/prod_agua.png" alt="Agua Mineral"></div>
                             <div class="product-name">Agua Mineral</div>
                             <div class="product-price">S/. 1.50</div>
                         </div>
                         <div class="product-item" id="prod-jugo" onclick="selectProduct('Jugo', 2.00)">
                             <div class="product-code">B3</div>
-                            <div class="product-icon">🧃</div>
+                            <div class="product-icon"><img src="images/prod_jugo.png" alt="Jugo de Caja"></div>
                             <div class="product-name">Jugo de Caja</div>
                             <div class="product-price">S/. 2.00</div>
                         </div>
@@ -1354,19 +1363,19 @@
                     <div class="shelf">
                         <div class="product-item" id="prod-energizante" onclick="selectProduct('Energizante', 4.50)">
                             <div class="product-code">C1</div>
-                            <div class="product-icon">⚡</div>
+                            <div class="product-icon"><img src="images/prod_energizante.png" alt="Energizante"></div>
                             <div class="product-name">Energizante</div>
                             <div class="product-price">S/. 4.50</div>
                         </div>
                         <div class="product-item" id="prod-gomitas" onclick="selectProduct('Gomitas', 1.80)">
                             <div class="product-code">C2</div>
-                            <div class="product-icon">🍬</div>
+                            <div class="product-icon"><img src="images/prod_gomitas.png" alt="Gomitas"></div>
                             <div class="product-name">Gomitas</div>
                             <div class="product-price">S/. 1.80</div>
                         </div>
                         <div class="product-item" id="prod-sandwich" onclick="selectProduct('Sándwich', 5.00)">
                             <div class="product-code">C3</div>
-                            <div class="product-icon">🥪</div>
+                            <div class="product-icon"><img src="images/prod_sandwich.png" alt="Sándwich"></div>
                             <div class="product-name">Sándwich</div>
                             <div class="product-price">S/. 5.00</div>
                         </div>
@@ -1747,18 +1756,23 @@
 
         function animateProductDelivery() {
             let trayProd = document.getElementById('tray-product');
-            let iconMap = {
-                'Gaseosa': '🥤',
-                'Galletas': '🍪',
-                'Papas': '🍟',
-                'Chocolate': '🍫',
-                'Agua': '💧',
-                'Jugo': '🧃',
-                'Energizante': '⚡',
-                'Gomitas': '🍬',
-                'Sándwich': '🥪'
+            let imageMap = {
+                'Gaseosa': 'images/prod_gaseosa.png',
+                'Galletas': 'images/prod_galletas.png',
+                'Papas': 'images/prod_papas.png',
+                'Chocolate': 'images/prod_chocolate.png',
+                'Agua': 'images/prod_agua.png',
+                'Jugo': 'images/prod_jugo.png',
+                'Energizante': 'images/prod_energizante.png',
+                'Gomitas': 'images/prod_gomitas.png',
+                'Sándwich': 'images/prod_sandwich.png'
             };
-            trayProd.innerText = iconMap[productSelected] || '🎁';
+            let src = imageMap[productSelected];
+            if (src) {
+                trayProd.innerHTML = `<img src="${src}" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">`;
+            } else {
+                trayProd.innerText = '🎁';
+            }
             trayProd.style.display = 'block';
             trayProd.classList.add('delivered-item');
         }
