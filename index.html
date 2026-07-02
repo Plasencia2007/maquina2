@@ -1397,6 +1397,81 @@
             box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
         }
 
+        .state-status-pill {
+            margin-top: 14px;
+            background: #0ea5e9;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.88em;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 
+                0 0 15px rgba(14, 165, 233, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Layout de la bandeja con producto y vuelto */
+        .tray-delivery-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 8px;
+            background: rgba(2, 4, 6, 0.8);
+            border-radius: 12px;
+            border: 1.5px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .tray-product-image {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .tray-change-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 4px 6px;
+            max-height: 80px;
+            overflow-y: auto;
+            align-items: center;
+        }
+
+        /* Monedas en miniatura del vuelto */
+        .tray-coin-mini {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5em;
+            font-weight: 900;
+            color: transparent;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .tray-coin-mini.coin-5s { background-image: url('images/coin_5s.png'); }
+        .tray-coin-mini.coin-2s { background-image: url('images/coin_2s.png'); }
+        .tray-coin-mini.coin-1s { background-image: url('images/coin_1s.png'); }
+        .tray-coin-mini.coin-50c { background-image: url('images/coin_50c.png'); }
+        .tray-coin-mini.coin-20c { background-image: url('images/coin_20c.png'); }
+        .tray-coin-mini.coin-10c { background-image: url('images/coin_10c.png'); }
+
         /* Responsive */
         @media (max-width: 1600px) {
             .main-layout {
@@ -1563,6 +1638,10 @@
                                 <div class="coin-slot">
                                     <span class="slot-label">Monedas →</span>
                                     <div class="slot-hole"></div>
+                                </div>
+                                <!-- Estado actual pill / badge -->
+                                <div class="state-status-pill" id="state-status-pill">
+                                    Estado q0 | Saldo real S/. 0.00
                                 </div>
                             </div>
 
@@ -1947,11 +2026,36 @@
                 'Sándwich': 'images/prod_sandwich.png'
             };
             let src = imageMap[productSelected];
-            if (src) {
-                trayProd.innerHTML = `<img src="${src}" style="width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">`;
-            } else {
-                trayProd.innerText = '🎁';
+            
+            let change = parseFloat((amountDeposited - priceSelected).toFixed(2));
+            let coinsHtml = "";
+            if (change > 0) {
+                let coins = getCoinChangeBreakdown(change);
+                let coinsList = coins.map(val => {
+                    let coinClass = getCoinClass(val);
+                    return `<div class="tray-coin-mini ${coinClass}" title="S/. ${val.toFixed(2)}"></div>`;
+                }).join('');
+                coinsHtml = `
+                    <div class="tray-change-box" title="Vuelto: S/. ${change.toFixed(2)}">
+                        ${coinsList}
+                    </div>
+                `;
             }
+
+            let prodHtml = "";
+            if (src) {
+                prodHtml = `<img src="${src}" class="tray-product-image">`;
+            } else {
+                prodHtml = `<span style="font-size: 1.5em;">🎁</span>`;
+            }
+
+            trayProd.innerHTML = `
+                <div class="tray-delivery-content">
+                    ${prodHtml}
+                    ${coinsHtml}
+                </div>
+            `;
+            
             trayProd.style.display = 'block';
             trayProd.classList.add('delivered-item');
         }
@@ -1988,6 +2092,9 @@
                     document.getElementById('screen-status').innerText = "TRANSACCIÓN CANCELADA";
                     document.getElementById('screen-detail').innerHTML = `<div class="detail-line" style="color: var(--cyber-magenta); font-size:1.15em; font-weight:bold; text-shadow:0 0 10px rgba(255,0,127,0.5);">DEVOLVIENDO: S/. ${amountDeposited.toFixed(2)}</div>`;
                     document.getElementById('screen-progress-bar').style.width = '0%';
+
+                    // Mostrar monedas físicas devueltas en la bandeja
+                    showRefundCoinsInTray(amountDeposited);
 
                     document.querySelectorAll('.btn-coin').forEach(btn => btn.disabled = true);
                     document.getElementById('btn-cancel-trans').disabled = true;
@@ -2055,8 +2162,73 @@
                 document.getElementById('formal-container').innerHTML = generateFormalDefinition();
             }
 
+            // Actualizar la píldora de estado
+            const pill = document.getElementById('state-status-pill');
+            if (pill) {
+                let stateNum = 0;
+                if (currentState === "q_exacto") {
+                    stateNum = Math.round(priceSelected * 100);
+                } else if (currentState === "q_vuelto") {
+                    stateNum = Math.round(priceSelected * 100);
+                } else if (currentState.startsWith("q_")) {
+                    stateNum = Math.round(parseFloat(currentState.substring(2)) * 100);
+                }
+
+                if (currentState === "q_exacto") {
+                    pill.innerText = `Estado q_exact | Saldo real S/. ${amountDeposited.toFixed(2)}`;
+                } else if (currentState === "q_vuelto") {
+                    pill.innerText = `Estado q_vuelt | Saldo real S/. ${amountDeposited.toFixed(2)}`;
+                } else {
+                    pill.innerText = `Estado q${stateNum} | Saldo real S/. ${amountDeposited.toFixed(2)}`;
+                }
+            }
+
             // Resaltar el nodo del estado actual en el Grafo
             highlightCurrentState();
+        }
+
+        // --- AUXILIARES PARA MONEDAS Y VUELTO ---
+        function getCoinChangeBreakdown(changeAmount) {
+            let change = parseFloat(changeAmount.toFixed(2));
+            const coinValues = [5.00, 2.00, 1.00, 0.50, 0.20, 0.10];
+            const breakdown = [];
+            
+            for (let val of coinValues) {
+                while (change >= val - 0.001) {
+                    breakdown.push(val);
+                    change = parseFloat((change - val).toFixed(2));
+                }
+            }
+            return breakdown;
+        }
+
+        function getCoinClass(value) {
+            if (value === 5.00) return 'coin-5s';
+            if (value === 2.00) return 'coin-2s';
+            if (value === 1.00) return 'coin-1s';
+            if (value === 0.50) return 'coin-50c';
+            if (value === 0.20) return 'coin-20c';
+            return 'coin-10c';
+        }
+
+        function showRefundCoinsInTray(amount) {
+            let trayProd = document.getElementById('tray-product');
+            let coins = getCoinChangeBreakdown(amount);
+            let coinsHtml = coins.map(val => {
+                let coinClass = getCoinClass(val);
+                return `<div class="tray-coin-mini ${coinClass}" title="S/. ${val.toFixed(2)}"></div>`;
+            }).join('');
+
+            trayProd.innerHTML = `
+                <div class="tray-delivery-content">
+                    <div style="font-size: 1.5em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">🪙</div>
+                    <div class="tray-change-box">
+                        ${coinsHtml}
+                    </div>
+                </div>
+            `;
+            trayProd.style.display = 'block';
+            trayProd.classList.add('delivered-item');
         }
 
         // Grafo placeholder inicial (antes de seleccionar producto)
