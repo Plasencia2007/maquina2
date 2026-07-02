@@ -19,7 +19,7 @@
             --cyber-green: #00ff66;
             --cyber-purple: #8a2be2;
             --cyber-yellow: #ffd700;
-            
+
             --machine-body: #0f141c;
             --machine-dark: #171d26;
             --machine-darker: #080c10;
@@ -60,13 +60,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15) 0px,
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 3px
-            );
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.15) 0px,
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 3px);
             pointer-events: none;
             z-index: 0;
         }
@@ -82,7 +80,7 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2.3em;
             color: var(--cyber-blue);
-            text-shadow: 
+            text-shadow:
                 0 0 10px rgba(0, 240, 255, 0.5),
                 0 0 20px rgba(0, 240, 255, 0.2),
                 2px 2px 0px rgba(255, 0, 127, 0.5);
@@ -158,7 +156,7 @@
             font-size: 1.9em;
             font-weight: 900;
             color: #fff;
-            text-shadow: 
+            text-shadow:
                 0 0 10px var(--cyber-magenta),
                 0 0 20px var(--cyber-magenta),
                 0 0 30px rgba(255, 0, 127, 0.5);
@@ -266,10 +264,13 @@
         }
 
         @keyframes selectedPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 0 15px rgba(255, 0, 127, 0.45), inset 0 0 8px rgba(255, 0, 127, 0.2);
                 border-color: rgba(255, 0, 127, 0.7);
             }
+
             50% {
                 box-shadow: 0 0 30px rgba(255, 0, 127, 0.7), inset 0 0 15px rgba(255, 0, 127, 0.35);
                 border-color: rgba(255, 0, 127, 1);
@@ -391,9 +392,17 @@
         }
 
         @keyframes flicker {
-            0% { opacity: 0.25; }
-            50% { opacity: 0.15; }
-            100% { opacity: 0.25; }
+            0% {
+                opacity: 0.25;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+
+            100% {
+                opacity: 0.25;
+            }
         }
 
         .led-screen .status {
@@ -491,12 +500,15 @@
         }
 
         @keyframes deliverPulse {
-            0%, 100% { 
-                box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,102,0.4), 0 0 50px rgba(0,255,102,0.15); 
+
+            0%,
+            100% {
+                box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 255, 102, 0.4), 0 0 50px rgba(0, 255, 102, 0.15);
                 border-color: rgba(0, 255, 102, 0.6);
             }
-            50% { 
-                box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 40px rgba(0,255,102,0.8), 0 0 80px rgba(0,255,102,0.3); 
+
+            50% {
+                box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 255, 102, 0.8), 0 0 80px rgba(0, 255, 102, 0.3);
                 border-color: rgba(0, 255, 102, 1);
             }
         }
@@ -547,88 +559,95 @@
             justify-content: center;
             border: none;
             outline: none;
-        }        /* Monedas peruanas reales */
+        }
+
+        /* Monedas peruanas reales */
         .coin-10c {
             background: url('images/coin_10c.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #b58c30;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #805c1a,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.25);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.25);
             color: transparent !important;
             text-shadow: none !important;
         }
+
         .coin-20c {
             background: url('images/coin_20c.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #b58c30;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #805c1a,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.25);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.25);
             color: transparent !important;
             text-shadow: none !important;
         }
+
         .coin-50c {
             background: url('images/coin_50c.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #94a3b8;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #475569,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.2);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.2);
             color: transparent !important;
             text-shadow: none !important;
         }
+
         .coin-1s {
             background: url('images/coin_1s.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #94a3b8;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #475569,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.2);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.2);
             color: transparent !important;
             text-shadow: none !important;
         }
+
         .coin-2s {
             background: url('images/coin_2s.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #94a3b8;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #475569,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.25);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.25);
             color: transparent !important;
             text-shadow: none !important;
         }
+
         .coin-5s {
             background: url('images/coin_5s.png') no-repeat center center;
             background-size: cover;
             border: 2px solid #64748b;
-            box-shadow: 
+            box-shadow:
                 0 4px 0 #334155,
                 0 6px 12px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 3px rgba(0,0,0,0.25);
+                inset 0 -2px 3px rgba(0, 0, 0, 0.25);
             color: transparent !important;
             text-shadow: none !important;
         }
- 
+
         .btn-coin:hover:not(:disabled) {
             transform: translateY(-4px) scale(1.06) rotate(6deg);
             box-shadow:
                 0 8px 0 rgba(0, 0, 0, 0.3),
                 0 10px 16px rgba(0, 240, 255, 0.35);
         }
- 
+
         .btn-coin:active:not(:disabled) {
             transform: translateY(4px) scale(0.96);
             box-shadow:
-                0 0px 0 rgba(0,0,0,0.3),
+                0 0px 0 rgba(0, 0, 0, 0.3),
                 0 2px 4px rgba(0, 0, 0, 0.4);
         }
- 
+
         .btn-coin:disabled {
             filter: grayscale(1) brightness(0.4) contrast(1.1);
             cursor: not-allowed;
@@ -651,7 +670,7 @@
             background: #020406;
             border-radius: 4px;
             border: 2px solid var(--cyber-blue);
-            box-shadow: 
+            box-shadow:
                 0 0 10px rgba(0, 240, 255, 0.5),
                 inset 0 2px 4px rgba(0, 0, 0, 0.95);
         }
@@ -667,13 +686,11 @@
 
         /* Botón cancelar */
         .btn-cancel {
-            background: repeating-linear-gradient(
-                45deg,
-                var(--accent-red),
-                var(--accent-red) 12px,
-                var(--accent-red-dark) 12px,
-                var(--accent-red-dark) 24px
-            );
+            background: repeating-linear-gradient(45deg,
+                    var(--accent-red),
+                    var(--accent-red) 12px,
+                    var(--accent-red-dark) 12px,
+                    var(--accent-red-dark) 24px);
             color: white;
             border: 2px solid var(--cyber-magenta);
             padding: 14px;
@@ -687,7 +704,7 @@
                 0 4px 0 var(--accent-red-dark),
                 0 6px 15px rgba(255, 0, 127, 0.3);
             transition: all 0.15s ease;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
 
         .btn-cancel:hover:not(:disabled) {
@@ -737,7 +754,10 @@
         .delivery-tray::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-image: radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 0);
             background-size: 8px 8px;
             pointer-events: none;
@@ -783,7 +803,7 @@
             border-radius: 0 0 6px 6px;
             border: 1px solid rgba(0, 240, 255, 0.2);
             border-top: none;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
         }
 
         .diagram-panel {
@@ -794,7 +814,7 @@
             border-radius: 20px;
             border: 2px solid rgba(0, 240, 255, 0.25);
             padding: 24px;
-            box-shadow: 
+            box-shadow:
                 0 0 30px rgba(0, 240, 255, 0.12),
                 0 15px 45px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(12px);
@@ -868,8 +888,15 @@
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .price-modal-header {
@@ -916,6 +943,7 @@
         .price-inputs-grid::-webkit-scrollbar {
             width: 6px;
         }
+
         .price-inputs-grid::-webkit-scrollbar-thumb {
             background: var(--cyber-blue);
             border-radius: 3px;
@@ -1147,7 +1175,7 @@
             background: rgba(0, 0, 0, 0.35);
             border-radius: 8px;
             border-left: 4px solid var(--cyber-blue);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
         /* Estilos Tabla de Transición */
@@ -1223,28 +1251,34 @@
                 transform: translateY(-80px) scale(0.9, 1.1) rotate(-15deg);
                 opacity: 0;
             }
+
             25% {
                 transform: translateY(0) scale(1.0, 1.0) rotate(0deg);
                 opacity: 1;
             }
+
             40% {
                 transform: translateY(-16px) scale(1.1, 0.9) rotate(8deg);
             }
+
             55% {
                 transform: translateY(0) scale(0.95, 1.05) rotate(0deg);
             }
+
             70% {
                 transform: translateY(-6px) scale(1.02, 0.98) rotate(-4deg);
             }
+
             85% {
                 transform: translateY(0) scale(1.0, 1.0) rotate(2deg);
             }
+
             100% {
                 transform: translateY(0) scale(1.0, 1.0) rotate(0deg);
                 opacity: 1;
             }
         }
- 
+
         .delivered-item {
             animation: deliverProduct 1.2s ease-in-out forwards;
         }
@@ -1278,7 +1312,7 @@
             flex-direction: column;
             gap: 10px;
         }
- 
+
         .keypad-label {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.72em;
@@ -1289,7 +1323,7 @@
             font-weight: 900;
             text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
         }
- 
+
         .keypad-display {
             background: #020406;
             border: 1px solid rgba(255, 0, 127, 0.3);
@@ -1308,13 +1342,13 @@
             justify-content: center;
             transition: all 0.2s ease;
         }
- 
+
         .keypad-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
- 
+
         .btn-key {
             background: #1e293b;
             color: #cbd5e1;
@@ -1326,10 +1360,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.15s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             outline: none;
         }
- 
+
         .btn-key:hover:not(:disabled) {
             background: rgba(255, 0, 127, 0.15);
             border-color: var(--cyber-magenta);
@@ -1337,11 +1371,11 @@
             box-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
             transform: translateY(-1px);
         }
- 
+
         .btn-key:active {
             transform: translateY(1px);
         }
- 
+
         .btn-key-clear {
             background: rgba(255, 255, 255, 0.05);
             color: #94a3b8;
@@ -1355,14 +1389,14 @@
             transition: all 0.15s ease;
             outline: none;
         }
- 
+
         .btn-key-clear:hover {
             background: rgba(239, 68, 68, 0.15);
             border-color: #ef4444;
             color: #fff;
             box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
         }
- 
+
         /* Responsive */
         @media (max-width: 1600px) {
             .main-layout {
@@ -1382,13 +1416,16 @@
                 width: 95vw;
                 min-width: 340px;
             }
+
             .machine-body {
                 flex-direction: column;
             }
+
             .control-side {
                 width: auto;
                 margin: 0 14px 14px;
             }
+
             .product-showcase {
                 margin: 14px;
             }
@@ -1399,8 +1436,6 @@
 <body>
 
     <header>
-        <h1>Máquina de Estados Finitos (MEF)</h1>
-        <p>Simulador Pedagógico de Expendedora Automática (Modelo de Mealy)</p>
         <button id="toggle-panel-btn" class="toggle-fsm-btn" onclick="toggleFSMPanel()">
             <span class="icon">📊</span> Ver Grafo y Análisis [G]
         </button>
@@ -1418,132 +1453,139 @@
                 <!-- Cuerpo: productos a la izquierda, controles a la derecha -->
                 <div class="machine-body">
 
-                <!-- Vitrina con productos en estantes -->
-                <div class="product-showcase">
-                    <!-- Estante A -->
-                    <div class="shelf">
-                        <div class="product-item" id="prod-gaseosa" onclick="selectProduct('Gaseosa', 2.50)">
-                            <div class="product-code">A1</div>
-                            <div class="product-icon"><img src="images/prod_gaseosa.png" alt="Gaseosa"></div>
-                            <div class="product-name">Gaseosa</div>
-                            <div class="product-price">S/. 2.50</div>
-                        </div>
-                        <div class="product-item" id="prod-galletas" onclick="selectProduct('Galletas', 1.20)">
-                            <div class="product-code">A2</div>
-                            <div class="product-icon"><img src="images/prod_galletas.png" alt="Galletas"></div>
-                            <div class="product-name">Galletas</div>
-                            <div class="product-price">S/. 1.20</div>
-                        </div>
-                        <div class="product-item" id="prod-papas" onclick="selectProduct('Papas', 2.20)">
-                            <div class="product-code">A3</div>
-                            <div class="product-icon"><img src="images/prod_papas.png" alt="Papas Fritas"></div>
-                            <div class="product-name">Papas Fritas</div>
-                            <div class="product-price">S/. 2.20</div>
-                        </div>
-                    </div>
-                    <!-- Estante B -->
-                    <div class="shelf">
-                        <div class="product-item" id="prod-chocolate" onclick="selectProduct('Chocolate', 3.50)">
-                            <div class="product-code">B1</div>
-                            <div class="product-icon"><img src="images/prod_chocolate.png" alt="Chocolate"></div>
-                            <div class="product-name">Chocolate</div>
-                            <div class="product-price">S/. 3.50</div>
-                        </div>
-                        <div class="product-item" id="prod-agua" onclick="selectProduct('Agua', 1.50)">
-                            <div class="product-code">B2</div>
-                            <div class="product-icon"><img src="images/prod_agua.png" alt="Agua Mineral"></div>
-                            <div class="product-name">Agua Mineral</div>
-                            <div class="product-price">S/. 1.50</div>
-                        </div>
-                        <div class="product-item" id="prod-jugo" onclick="selectProduct('Jugo', 2.00)">
-                            <div class="product-code">B3</div>
-                            <div class="product-icon"><img src="images/prod_jugo.png" alt="Jugo de Caja"></div>
-                            <div class="product-name">Jugo de Caja</div>
-                            <div class="product-price">S/. 2.00</div>
-                        </div>
-                    </div>
-                    <!-- Estante C -->
-                    <div class="shelf">
-                        <div class="product-item" id="prod-energizante" onclick="selectProduct('Energizante', 4.50)">
-                            <div class="product-code">C1</div>
-                            <div class="product-icon"><img src="images/prod_energizante.png" alt="Energizante"></div>
-                            <div class="product-name">Energizante</div>
-                            <div class="product-price">S/. 4.50</div>
-                        </div>
-                        <div class="product-item" id="prod-gomitas" onclick="selectProduct('Gomitas', 1.80)">
-                            <div class="product-code">C2</div>
-                            <div class="product-icon"><img src="images/prod_gomitas.png" alt="Gomitas"></div>
-                            <div class="product-name">Gomitas</div>
-                            <div class="product-price">S/. 1.80</div>
-                        </div>
-                        <div class="product-item" id="prod-sandwich" onclick="selectProduct('Sándwich', 5.00)">
-                            <div class="product-code">C3</div>
-                            <div class="product-icon"><img src="images/prod_sandwich.png" alt="Sándwich"></div>
-                            <div class="product-name">Sándwich</div>
-                            <div class="product-price">S/. 5.00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Panel lateral derecho: controles -->
-                <div class="control-side">
-                    <div class="control-section">
-                        <!-- Pantalla LED -->
-                        <div class="led-screen" id="machine-screen">
-                            <div class="status" id="screen-status">SELECCIONE UN PRODUCTO</div>
-                            <div class="detail" id="screen-detail">Monto depositado: S/. 0.00</div>
-                            <div class="screen-progress"><div class="screen-progress-bar" id="screen-progress-bar"></div></div>
-                        </div>
-
-                        <!-- Panel de Selección (Teclado Alfanumérico) -->
-                        <div class="keypad-panel">
-                            <div class="keypad-label">Teclado de Selección</div>
-                            <div class="keypad-display" id="keypad-display">__</div>
-                            <div class="keypad-grid">
-                                <button class="btn-key" onclick="pressKey('A')">A</button>
-                                <button class="btn-key" onclick="pressKey('B')">B</button>
-                                <button class="btn-key" onclick="pressKey('C')">C</button>
-                                <button class="btn-key" onclick="pressKey('1')">1</button>
-                                <button class="btn-key" onclick="pressKey('2')">2</button>
-                                <button class="btn-key" onclick="pressKey('3')">3</button>
+                    <!-- Vitrina con productos en estantes -->
+                    <div class="product-showcase">
+                        <!-- Estante A -->
+                        <div class="shelf">
+                            <div class="product-item" id="prod-gaseosa" onclick="selectProduct('Gaseosa', 2.50)">
+                                <div class="product-code">A1</div>
+                                <div class="product-icon"><img src="images/prod_gaseosa.png" alt="Gaseosa"></div>
+                                <div class="product-name">Gaseosa</div>
+                                <div class="product-price">S/. 2.50</div>
                             </div>
-                            <button class="btn-key-clear" onclick="clearKeypad()">✕ BORRAR</button>
-                        </div>
-
-                        <!-- Panel de monedas -->
-                        <div class="coin-panel">
-                            <div class="coin-panel-label">Insertar Monedas (S/.)</div>
-                            <div class="coin-grid">
-                                <button class="btn-coin coin-10c" onclick="insertCoin(0.10)" disabled>10¢</button>
-                                <button class="btn-coin coin-20c" onclick="insertCoin(0.20)" disabled>20¢</button>
-                                <button class="btn-coin coin-50c" onclick="insertCoin(0.50)" disabled>50¢</button>
-                                <button class="btn-coin coin-1s" onclick="insertCoin(1.00)" disabled>S/. 1</button>
-                                <button class="btn-coin coin-2s" onclick="insertCoin(2.00)" disabled>S/. 2</button>
-                                <button class="btn-coin coin-5s" onclick="insertCoin(5.00)" disabled>S/. 5</button>
+                            <div class="product-item" id="prod-galletas" onclick="selectProduct('Galletas', 1.20)">
+                                <div class="product-code">A2</div>
+                                <div class="product-icon"><img src="images/prod_galletas.png" alt="Galletas"></div>
+                                <div class="product-name">Galletas</div>
+                                <div class="product-price">S/. 1.20</div>
                             </div>
-                            <div class="coin-slot">
-                                <span class="slot-label">Monedas →</span>
-                                <div class="slot-hole"></div>
+                            <div class="product-item" id="prod-papas" onclick="selectProduct('Papas', 2.20)">
+                                <div class="product-code">A3</div>
+                                <div class="product-icon"><img src="images/prod_papas.png" alt="Papas Fritas"></div>
+                                <div class="product-name">Papas Fritas</div>
+                                <div class="product-price">S/. 2.20</div>
                             </div>
                         </div>
-
-                        <!-- Botón cancelar -->
-                        <button class="btn-cancel" id="btn-cancel-trans" onclick="cancelTransaction()" disabled>✕ CANCELAR /
-                            SOLICITAR VUELTO</button>
-                        
-                        <!-- Botón configurar precios -->
-                        <button class="btn-config-prices" id="btn-config-prices" onclick="openPriceConfigModal()">⚙️ CONFIGURAR PRECIOS</button>
+                        <!-- Estante B -->
+                        <div class="shelf">
+                            <div class="product-item" id="prod-chocolate" onclick="selectProduct('Chocolate', 3.50)">
+                                <div class="product-code">B1</div>
+                                <div class="product-icon"><img src="images/prod_chocolate.png" alt="Chocolate"></div>
+                                <div class="product-name">Chocolate</div>
+                                <div class="product-price">S/. 3.50</div>
+                            </div>
+                            <div class="product-item" id="prod-agua" onclick="selectProduct('Agua', 1.50)">
+                                <div class="product-code">B2</div>
+                                <div class="product-icon"><img src="images/prod_agua.png" alt="Agua Mineral"></div>
+                                <div class="product-name">Agua Mineral</div>
+                                <div class="product-price">S/. 1.50</div>
+                            </div>
+                            <div class="product-item" id="prod-jugo" onclick="selectProduct('Jugo', 2.00)">
+                                <div class="product-code">B3</div>
+                                <div class="product-icon"><img src="images/prod_jugo.png" alt="Jugo de Caja"></div>
+                                <div class="product-name">Jugo de Caja</div>
+                                <div class="product-price">S/. 2.00</div>
+                            </div>
+                        </div>
+                        <!-- Estante C -->
+                        <div class="shelf">
+                            <div class="product-item" id="prod-energizante"
+                                onclick="selectProduct('Energizante', 4.50)">
+                                <div class="product-code">C1</div>
+                                <div class="product-icon"><img src="images/prod_energizante.png" alt="Energizante">
+                                </div>
+                                <div class="product-name">Energizante</div>
+                                <div class="product-price">S/. 4.50</div>
+                            </div>
+                            <div class="product-item" id="prod-gomitas" onclick="selectProduct('Gomitas', 1.80)">
+                                <div class="product-code">C2</div>
+                                <div class="product-icon"><img src="images/prod_gomitas.png" alt="Gomitas"></div>
+                                <div class="product-name">Gomitas</div>
+                                <div class="product-price">S/. 1.80</div>
+                            </div>
+                            <div class="product-item" id="prod-sandwich" onclick="selectProduct('Sándwich', 5.00)">
+                                <div class="product-code">C3</div>
+                                <div class="product-icon"><img src="images/prod_sandwich.png" alt="Sándwich"></div>
+                                <div class="product-name">Sándwich</div>
+                                <div class="product-price">S/. 5.00</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Bandeja de entrega -->
-                    <div class="delivery-tray" onclick="collectProduct()" style="cursor: pointer;"
-                        title="Haga click para retirar el producto">
-                        <div class="tray-flap"></div>
-                        <div id="tray-product"
-                            style="display: none; font-size: 1.8em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));"></div>
+                    <!-- Panel lateral derecho: controles -->
+                    <div class="control-side">
+                        <div class="control-section">
+                            <!-- Pantalla LED -->
+                            <div class="led-screen" id="machine-screen">
+                                <div class="status" id="screen-status">SELECCIONE UN PRODUCTO</div>
+                                <div class="detail" id="screen-detail">Monto depositado: S/. 0.00</div>
+                                <div class="screen-progress">
+                                    <div class="screen-progress-bar" id="screen-progress-bar"></div>
+                                </div>
+                            </div>
+
+                            <!-- Panel de Selección (Teclado Alfanumérico) -->
+                            <div class="keypad-panel">
+                                <div class="keypad-label">Teclado de Selección</div>
+                                <div class="keypad-display" id="keypad-display">__</div>
+                                <div class="keypad-grid">
+                                    <button class="btn-key" onclick="pressKey('A')">A</button>
+                                    <button class="btn-key" onclick="pressKey('B')">B</button>
+                                    <button class="btn-key" onclick="pressKey('C')">C</button>
+                                    <button class="btn-key" onclick="pressKey('1')">1</button>
+                                    <button class="btn-key" onclick="pressKey('2')">2</button>
+                                    <button class="btn-key" onclick="pressKey('3')">3</button>
+                                </div>
+                                <button class="btn-key-clear" onclick="clearKeypad()">✕ BORRAR</button>
+                            </div>
+
+                            <!-- Panel de monedas -->
+                            <div class="coin-panel">
+                                <div class="coin-panel-label">Insertar Monedas (S/.)</div>
+                                <div class="coin-grid">
+                                    <button class="btn-coin coin-10c" onclick="insertCoin(0.10)" disabled>10¢</button>
+                                    <button class="btn-coin coin-20c" onclick="insertCoin(0.20)" disabled>20¢</button>
+                                    <button class="btn-coin coin-50c" onclick="insertCoin(0.50)" disabled>50¢</button>
+                                    <button class="btn-coin coin-1s" onclick="insertCoin(1.00)" disabled>S/. 1</button>
+                                    <button class="btn-coin coin-2s" onclick="insertCoin(2.00)" disabled>S/. 2</button>
+                                    <button class="btn-coin coin-5s" onclick="insertCoin(5.00)" disabled>S/. 5</button>
+                                </div>
+                                <div class="coin-slot">
+                                    <span class="slot-label">Monedas →</span>
+                                    <div class="slot-hole"></div>
+                                </div>
+                            </div>
+
+                            <!-- Botón cancelar -->
+                            <button class="btn-cancel" id="btn-cancel-trans" onclick="cancelTransaction()" disabled>✕
+                                CANCELAR /
+                                SOLICITAR VUELTO</button>
+
+                            <!-- Botón configurar precios -->
+                            <button class="btn-config-prices" id="btn-config-prices" onclick="openPriceConfigModal()">⚙️
+                                CONFIGURAR PRECIOS</button>
+                        </div>
+
+                        <!-- Bandeja de entrega -->
+                        <div class="delivery-tray" onclick="collectProduct()" style="cursor: pointer;"
+                            title="Haga click para retirar el producto">
+                            <div class="tray-flap"></div>
+                            <div id="tray-product"
+                                style="display: none; font-size: 1.8em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div> <!-- cierre machine-body -->
+                </div> <!-- cierre machine-body -->
             </div>
             <!-- Patas -->
             <div class="machine-feet">
@@ -1565,7 +1607,8 @@
                     <button class="graph-btn" onclick="zoomGraph(1.2)" title="Acercar">＋</button>
                     <button class="graph-btn" onclick="zoomGraph(0.8)" title="Alejar">－</button>
                     <button class="graph-btn" onclick="resetGraphView()" title="Ajustar y Centrar">🎯 Centrar</button>
-                    <button class="graph-btn" onclick="toggleFullscreenGraph()" title="Pantalla Completa [G]" style="display: flex; align-items: center; gap: 4px;">🖥️ Pantalla Completa [G]</button>
+                    <button class="graph-btn" onclick="toggleFullscreenGraph()" title="Pantalla Completa [G]"
+                        style="display: flex; align-items: center; gap: 4px;">🖥️ Pantalla Completa [G]</button>
                 </div>
             </div>
 
@@ -1819,7 +1862,7 @@
 
             // Generar el autómata COMPLETO para este producto
             buildFullAutomaton(priceSelected, name);
-            
+
             // Sincronizar el teclado de selección
             keypadSelection = productCodeMap[name] || "";
             updateKeypadDisplay();
@@ -1855,7 +1898,7 @@
                 }
 
                 document.getElementById('screen-status').innerText = `¡ENTREGANDO ${productSelected.toUpperCase()}! 📦`;
-                document.getElementById('screen-detail').innerHTML = change > 0 
+                document.getElementById('screen-detail').innerHTML = change > 0
                     ? `<div class="detail-line" style="margin-top:4px;"><span class="detail-label">SU VUELTO:</span><span class="detail-value change">S/. ${change.toFixed(2)}</span></div>`
                     : `<div style="color:#00ff88; font-size:1.25em; margin-top:4px; text-shadow: 0 0 10px rgba(0,255,136,0.8);">✅ MONTO EXACTO INGRESADO</div>`;
                 document.getElementById('screen-progress-bar').style.width = '100%';
@@ -1887,7 +1930,7 @@
 
         function animateProductDelivery() {
             let trayProd = document.getElementById('tray-product');
-            
+
             setTimeout(() => {
                 playSound('thud');
             }, 300);
@@ -1940,15 +1983,15 @@
 
             if (amountDeposited > 0) {
                 playSound('change');
-                
+
                 if (!silent) {
                     document.getElementById('screen-status').innerText = "TRANSACCIÓN CANCELADA";
                     document.getElementById('screen-detail').innerHTML = `<div class="detail-line" style="color: var(--cyber-magenta); font-size:1.15em; font-weight:bold; text-shadow:0 0 10px rgba(255,0,127,0.5);">DEVOLVIENDO: S/. ${amountDeposited.toFixed(2)}</div>`;
                     document.getElementById('screen-progress-bar').style.width = '0%';
-                    
+
                     document.querySelectorAll('.btn-coin').forEach(btn => btn.disabled = true);
                     document.getElementById('btn-cancel-trans').disabled = true;
-                    
+
                     isDelivering = true;
                     setTimeout(() => {
                         isDelivering = false;
@@ -1975,7 +2018,7 @@
             document.getElementById('btn-cancel-trans').disabled = true;
 
             initGraph(); // Resetea el grafo
-            
+
             // Limpiar la selección del teclado
             keypadSelection = "";
             updateKeypadDisplay();
@@ -1993,7 +2036,7 @@
                 let pending = parseFloat((priceSelected - amountDeposited).toFixed(2));
                 let percent = Math.min((amountDeposited / priceSelected) * 100, 100);
                 document.getElementById('screen-status').innerText = `${productSelected.toUpperCase()} — S/. ${priceSelected.toFixed(2)}`;
-                document.getElementById('screen-detail').innerHTML = 
+                document.getElementById('screen-detail').innerHTML =
                     `<div class="detail-line"><span class="detail-label">DEPOSITADO:</span><span class="detail-value deposited">S/. ${amountDeposited.toFixed(2)}</span></div>` +
                     `<div class="detail-line"><span class="detail-label">FALTA:</span><span class="detail-value remaining">S/. ${pending.toFixed(2)}</span></div>`;
                 progressBar.style.width = percent + '%';
@@ -2150,13 +2193,13 @@
                         chosen: false,
                         ctxRenderer: ({ ctx, x, y, label }) => {
                             const outerR = finalSize;
-                            const gap    = 4;
+                            const gap = 4;
                             const innerR = outerR - gap - 2;
                             return {
                                 drawNode() {
                                     let isCurrent = key === currentState;
                                     let isVisited = visitedNodes.has(key);
-                                    
+
                                     let colorHex = isFinalExact ? '#00ff66' : '#ff007f';
                                     if (isCurrent) {
                                         colorHex = '#00ff66';
@@ -2392,7 +2435,7 @@
                 }
                 if (edge.id === "edge_q_exacto_q0_return" || edge.id === "edge_q_vuelto_q0_return") {
                     let isMatchingReturn = (edge.id === "edge_q_exacto_q0_return" && currentState === "q_exacto") || (edge.id === "edge_q_vuelto_q0_return" && currentState === "q_vuelto");
-                    
+
                     edgeUpdates.push({
                         id: edge.id,
                         color: { color: isMatchingReturn ? '#00f0ff' : 'rgba(255, 255, 255, 0.35)' },
@@ -2417,7 +2460,7 @@
                     const coinMatch = edge.id.match(/_([0-9\.]+)$/);
                     let coinValStr = coinMatch ? coinMatch[1] : "";
                     let nextState = edge.to;
-                    
+
                     let outputText = "∅";
                     if (nextState === "q_exacto") {
                         outputText = `Entregar`;
@@ -2634,21 +2677,21 @@
         function toggleFSMPanel() {
             const panel = document.getElementById('fsm-panel');
             const btn = document.getElementById('toggle-panel-btn');
-            
+
             if (panel.classList.contains('fullscreen')) {
                 toggleFullscreenGraph();
                 return;
             }
-            
+
             const isCollapsed = panel.classList.toggle('collapsed');
-            
+
             if (isCollapsed) {
                 btn.classList.remove('active');
                 btn.innerHTML = `<span class="icon">📊</span> Ver Grafo y Análisis [G]`;
             } else {
                 btn.classList.add('active');
                 btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis [G]`;
-                
+
                 // Redibujar y adaptar el grafo al tamaño recién renderizado
                 setTimeout(() => {
                     if (network) {
@@ -2664,13 +2707,13 @@
             const panel = document.getElementById('fsm-panel');
             const btn = document.getElementById('toggle-panel-btn');
             const isNowFullscreen = panel.classList.toggle('fullscreen');
-            
+
             if (isNowFullscreen) {
                 document.body.style.overflow = 'hidden';
                 panel.classList.remove('collapsed');
                 btn.classList.add('active');
                 btn.innerHTML = `<span class="icon">✕</span> Cerrar Grafo [G]`;
-                
+
                 // Switch to graph tab if not already active
                 const graphTabBtn = document.querySelector('.tab-buttons button');
                 if (graphTabBtn) {
@@ -2680,7 +2723,7 @@
                 document.body.style.overflow = '';
                 btn.innerHTML = `<span class="icon">✕</span> Ocultar Grafo y Análisis [G]`;
             }
-            
+
             setTimeout(() => {
                 if (network) {
                     network.setSize('100%', '100%');
@@ -2842,7 +2885,7 @@
                     displayEl.style.color = '#ff007f';
                     displayEl.style.borderColor = '#ff007f';
                     displayEl.style.boxShadow = '0 0 10px rgba(255, 0, 127, 0.5)';
-                    
+
                     setTimeout(() => {
                         keypadSelection = "";
                         updateKeypadDisplay();
@@ -2876,7 +2919,7 @@
         // Keydown shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            
+
             if (e.key === 'g' || e.key === 'G') {
                 toggleFullscreenGraph();
             } else if (e.key === 'Escape') {
@@ -2897,12 +2940,15 @@
             </div>
             <div class="price-modal-body">
                 <p style="margin-bottom: 15px; color: #cbd5e1; font-size: 0.85em; line-height: 1.4;">
-                    Ingresa los nuevos precios para los productos. Los precios deben ser múltiplos de <strong>S/. 0.10</strong> para que los grafos FSM se generen correctamente.
+                    Ingresa los nuevos precios para los productos. Los precios deben ser múltiplos de <strong>S/.
+                        0.10</strong> para que los grafos FSM se generen correctamente.
                 </p>
                 <div class="price-inputs-grid" id="price-inputs-container">
                     <!-- Generado dinámicamente -->
                 </div>
-                <div id="modal-error-message" style="color: #ff007f; font-family: 'Orbitron', sans-serif; font-size: 0.8em; margin-top: 10px; padding: 8px; border: 1px solid rgba(255, 0, 127, 0.3); background: rgba(255, 0, 127, 0.05); border-radius: 6px; display: none; line-height: 1.4;"></div>
+                <div id="modal-error-message"
+                    style="color: #ff007f; font-family: 'Orbitron', sans-serif; font-size: 0.8em; margin-top: 10px; padding: 8px; border: 1px solid rgba(255, 0, 127, 0.3); background: rgba(255, 0, 127, 0.05); border-radius: 6px; display: none; line-height: 1.4;">
+                </div>
             </div>
             <div class="price-modal-footer">
                 <button class="modal-save-btn" onclick="saveNewPrices()">Guardar Cambios</button>
