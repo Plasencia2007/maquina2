@@ -1516,6 +1516,33 @@
                     gain.gain.exponentialRampToValueAtTime(0.005, now + 0.3);
                     osc.start(now);
                     osc.stop(now + 0.3);
+                } else if (type === 'change') {
+                    // Cascading metal coins clinking sound
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1100, now);
+                    osc.frequency.exponentialRampToValueAtTime(1430, now + 0.04);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.002, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+
+                    const playCoinClink = (delay, pitch) => {
+                        const oscClink = audioCtx.createOscillator();
+                        const gainClink = audioCtx.createGain();
+                        oscClink.connect(gainClink);
+                        gainClink.connect(audioCtx.destination);
+                        oscClink.type = 'sine';
+                        oscClink.frequency.setValueAtTime(pitch, now + delay);
+                        oscClink.frequency.exponentialRampToValueAtTime(pitch * 1.3, now + delay + 0.04);
+                        gainClink.gain.setValueAtTime(0.08, now + delay);
+                        gainClink.gain.exponentialRampToValueAtTime(0.002, now + delay + 0.12);
+                        oscClink.start(now + delay);
+                        oscClink.stop(now + delay + 0.12);
+                    };
+
+                    playCoinClink(0.08, 950);
+                    playCoinClink(0.16, 1200);
+                    playCoinClink(0.24, 1050);
                 }
             } catch (e) {
                 console.warn("Web Audio API no inicializada o bloqueada por navegador:", e);
@@ -1681,6 +1708,11 @@
                 let change = parseFloat((amountDeposited - priceSelected).toFixed(2));
 
                 playSound('deliver');
+                if (change > 0) {
+                    setTimeout(() => {
+                        playSound('change');
+                    }, 500);
+                }
 
                 document.getElementById('screen-status').innerText = `¡ENTREGANDO ${productSelected.toUpperCase()}! 📦`;
                 document.getElementById('screen-detail').innerHTML = change > 0 
@@ -1757,7 +1789,7 @@
             if (isDelivering) return;
 
             if (amountDeposited > 0) {
-                playSound('cancel');
+                playSound('change');
                 
                 if (!silent) {
                     document.getElementById('screen-status').innerText = "TRANSACCIÓN CANCELADA";
